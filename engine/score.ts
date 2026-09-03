@@ -11,10 +11,51 @@ export interface PaymentInput {
   kazoeYakuman: boolean;
 }
 
+const roundUp100 = (x: number) => Math.ceil(x / 100) * 100;
+
 /** 점수 산출 (§9) */
 export function calcPayment(p: PaymentInput): Pick<ScoreResult, 'basePoints' | 'limitName' | 'payment'> {
-  // TODO: 기본점 = fu × 2^(2+han), 2000 초과 시 만관 절삭
-  // TODO: 하네만/배만/삼배만/(카조에)역만 구간
-  // TODO: 친/자 × 론/쯔모 지불액, 100점 올림, 본장·리치봉
-  throw new Error('TODO: calcPayment');
+  let basePoints: number;
+  let limitName: ScoreResult['limitName'];
+
+  if (p.yakumanMultiplier > 0) {
+    basePoints = 8000 * p.yakumanMultiplier;
+    limitName = p.yakumanMultiplier >= 2 ? '더블역만' : '역만';
+  } else if (p.han >= 13 && p.kazoeYakuman) {
+    basePoints = 8000;
+    limitName = '역만';
+  } else if (p.han >= 11) {
+    basePoints = 6000;
+    limitName = '삼배만';
+  } else if (p.han >= 8) {
+    basePoints = 4000;
+    limitName = '배만';
+  } else if (p.han >= 6) {
+    basePoints = 3000;
+    limitName = '하네만';
+  } else {
+    const raw = p.fu * 2 ** (2 + p.han);
+    if (p.han >= 5 || raw > 2000) {
+      basePoints = 2000;
+      limitName = '만관';
+    } else {
+      basePoints = raw;
+    }
+  }
+
+  const sticks = p.riichiSticks * 1000;
+  let payment: ScoreResult['payment'];
+  if (!p.isTsumo) {
+    const ron = roundUp100(basePoints * (p.isDealer ? 6 : 4)) + p.honba * 300;
+    payment = { total: ron + sticks, ron };
+  } else if (p.isDealer) {
+    const each = roundUp100(basePoints * 2) + p.honba * 100;
+    payment = { total: each * 3 + sticks, tsumoFromNonDealer: each };
+  } else {
+    const fromDealer = roundUp100(basePoints * 2) + p.honba * 100;
+    const fromNonDealer = roundUp100(basePoints) + p.honba * 100;
+    payment = { total: fromDealer + fromNonDealer * 2 + sticks, tsumoFromDealer: fromDealer, tsumoFromNonDealer: fromNonDealer };
+  }
+
+  return { basePoints, limitName, payment };
 }

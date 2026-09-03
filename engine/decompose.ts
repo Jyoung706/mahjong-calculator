@@ -81,7 +81,52 @@ function extractMelds(counts: Counts, need: number): DecomposedMeld[][] {
   return out;
 }
 
-/** 대기 형태 판정: 화료패가 어느 면자/머리에 속하는지에 따라 분해마다 여러 해석 가능 */
-export function waitTypes(d: Decomposition, winningTile: Tile): WaitType[] {
-  throw new Error('TODO: waitTypes');
+/**
+ * 화료패 배치 열거: 화료패가 어느 면자/머리를 완성했는지에 따라
+ * 한 분해에도 여러 해석(대기 형태)이 나온다. 각 해석마다 fromWin을 배치해 반환.
+ */
+export function winPlacements(
+  d: Decomposition,
+  winningTile: Tile,
+): { d: Decomposition; wait: WaitType }[] {
+  if (d.type !== 'standard') return [{ d, wait: 'tanki' }];
+
+  const out: { d: Decomposition; wait: WaitType }[] = [];
+  if (d.pair === winningTile) out.push({ d, wait: 'tanki' });
+
+  const seen = new Set<string>();
+  d.melds.forEach((m, i) => {
+    // 부로·깡은 화료 전에 확정된 면자라 화료패가 속할 수 없다
+    if (m.open || m.type === 'kan' || !m.tiles.includes(winningTile)) return;
+    const sig = m.type + m.tiles.join('');
+    if (seen.has(sig)) return; // 동일 면자 중복 배치 방지
+    seen.add(sig);
+
+    let wait: WaitType;
+    if (m.type === 'koutsu') {
+      wait = 'shanpon';
+    } else {
+      const [a, , c] = m.tiles;
+      if (winningTile === m.tiles[1]) wait = 'kanchan';
+      else if (winningTile === a) wait = num(c) === 9 ? 'penchan' : 'ryanmen'; // 89+7
+      else wait = num(a) === 1 ? 'penchan' : 'ryanmen'; // 12+3
+    }
+    const melds = d.melds.map((mm, j) => ({ ...mm, fromWin: i === j }));
+    out.push({ d: { ...d, melds }, wait });
+  });
+  return out;
+}
+
+/** 안커 판정: 론으로 3장째가 완성된 커쯔는 명각 취급 (§7.3) */
+export function isAnko(m: DecomposedMeld, isTsumo: boolean): boolean {
+  if (m.open) return false;
+  if (m.type === 'koutsu' && m.fromWin && !isTsumo) return false;
+  return m.type !== 'shuntsu';
+}
+
+/** 분해에 포함된 전체 패 (깡은 4장) */
+export function tilesOf(d: Decomposition): Tile[] {
+  if (d.type === 'chiitoi') return d.pairs.flatMap((t) => [t, t]);
+  if (d.type === 'kokushi') return [];
+  return [...d.melds.flatMap((m) => m.tiles), d.pair, d.pair];
 }
