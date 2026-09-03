@@ -1,0 +1,7 @@
+.group { display: flex; background: var(--seg); border-radius: 8px; padding: 2px; gap: 2px; flex: 1; }
+.option {
+  flex: 1; text-align: center; padding: 7px 0; border-radius: 6px;
+  font-size: 13px; font-weight: 500; cursor: pointer; border: none;
+  background: transparent; color: var(--muted);
+}
+.active { background: var(--surface); color: var(--ink); }

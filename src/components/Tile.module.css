@@ -1,0 +1,14 @@
+.tile {
+  border-radius: 5px;
+  padding: 0;
+  border: 1.5px solid var(--line);
+  background-color: var(--surface);
+  background-position: center;
+  background-size: 76% auto;
+  background-repeat: no-repeat;
+  box-shadow: 0 1px 0 #e2ded5;
+  cursor: default;
+}
+.clickable { cursor: pointer; }
+.selected { border-color: var(--accent); background-color: var(--accent-bg); }
+.dimmed { background-color: var(--soft); }

@@ -1,3 +1,6 @@
+import { cx } from '../lib/cx';
+import s from './Segmented.module.css';
+
 interface Props<T extends string> {
   options: readonly T[];
   labels?: readonly string[];
@@ -7,19 +10,9 @@ interface Props<T extends string> {
 
 export function Segmented<T extends string>({ options, labels, value, onChange }: Props<T>) {
   return (
-    <div style={{ display: 'flex', background: 'var(--seg)', borderRadius: 8, padding: 2, gap: 2, flex: 1 }}>
+    <div className={s.group}>
       {options.map((opt, i) => (
-        <button
-          key={opt}
-          type="button"
-          onClick={() => onChange(opt)}
-          style={{
-            flex: 1, textAlign: 'center', padding: '7px 0', borderRadius: 6, fontSize: 13,
-            fontWeight: 500, cursor: 'pointer', border: 'none',
-            background: opt === value ? 'var(--surface)' : 'transparent',
-            color: opt === value ? 'var(--ink)' : 'var(--muted)',
-          }}
-        >
+        <button key={opt} type="button" onClick={() => onChange(opt)} className={cx(s.option, opt === value && s.active)}>
           {labels?.[i] ?? opt}
         </button>
       ))}

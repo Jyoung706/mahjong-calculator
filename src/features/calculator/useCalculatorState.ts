@@ -53,6 +53,14 @@ export function useCalculatorState() {
 
   const ready = s.hand.length === handNeed && s.winTile !== null;
 
+  /** 해당 종류의 적패(각 색 1장뿐)가 이미 어딘가에 쓰였는가 */
+  const redUsed = (id: Tile) =>
+    s.hand.some((t) => t.id === id && t.red) ||
+    s.melds.some((m) => m.tiles.some((t) => t.id === id && t.red)) ||
+    (s.winTile !== null && s.winTile.id === id && s.winTile.red) ||
+    s.doraInd.some((t) => t.id === id && t.red) ||
+    s.uraInd.some((t) => t.id === id && t.red);
+
   /** 하단 패널에서 패를 탭했을 때의 단일 진입점 */
   const tapPanel = (id: Tile, red: boolean) => {
     set((st) => {
@@ -97,6 +105,7 @@ export function useCalculatorState() {
     state: s,
     handNeed,
     countOf,
+    redUsed,
     ready,
     tapPanel,
     toggleSelect: (key: number) =>

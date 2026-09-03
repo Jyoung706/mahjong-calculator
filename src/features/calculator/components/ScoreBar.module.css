@@ -1,0 +1,9 @@
+.bar { padding: 12px 18px; background: var(--ink); color: #f7f6f3; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.left { display: flex; flex-direction: column; gap: 2px; }
+.sub { font-size: 11px; opacity: 0.6; }
+.cta { font-size: 11px; font-weight: 500; margin-top: 3px; color: #f7f6f3; }
+.ctaDim { color: rgba(247, 246, 243, 0.55); }
+.right { flex: 1; text-align: right; display: flex; flex-direction: column; gap: 2px; }
+.headline { font-size: 28px; font-weight: 500; line-height: 1; color: #f7f6f3; }
+.headlineDim { color: #c4bfb5; }
+.note { font-size: 10px; opacity: 0.55; }

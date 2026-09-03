@@ -1,0 +1,60 @@
+.toggles { padding: 12px 14px; display: flex; gap: 8px; background: var(--surface); border-bottom: 1px solid var(--line-soft); }
+.body { flex: 1; overflow: auto; padding: 14px 14px 20px; }
+.tableCard { overflow: hidden; }
+.thead { display: grid; grid-template-columns: 58px repeat(4, 1fr); font-size: 12px; background: var(--soft); border-bottom: 1px solid var(--line-soft); }
+.theadFu { padding: 9px 8px; color: var(--muted); }
+.theadHan { padding: 9px 4px; text-align: center; color: #4a463f; }
+.row { display: grid; grid-template-columns: 58px repeat(4, 1fr); border-bottom: 1px solid var(--hairline); align-items: stretch; }
+.fuCell { padding: 8px; display: flex; flex-direction: column; gap: 1px; background: #faf8f4; }
+.fuNum { font-size: 13px; font-weight: 500; }
+.fuNote { font-size: 9px; color: var(--faint); }
+.cell { padding: 9px 3px; text-align: center; font-size: 11px; display: flex; align-items: center; justify-content: center; color: var(--ink); }
+.cellBlank { color: #c9c3b7; }
+.cellLimit { color: var(--muted); background: var(--soft); }
+.note { font-size: 11px; color: var(--muted); line-height: 1.6; margin: 16px 0; }
+.section { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.sectionTitle { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; }
+.limitHead { display: grid; grid-template-columns: 1fr 74px 96px 96px; font-size: 11px; background: var(--soft); border-bottom: 1px solid var(--line-soft); }
+.limitHeadCell { padding: 8px 4px; color: var(--muted); }
+.limitHeadCenter { padding: 8px 4px; text-align: center; color: #4a463f; }
+.limitRow { display: grid; grid-template-columns: 1fr 74px 96px 96px; border-bottom: 1px solid var(--hairline); align-items: center; }
+.limitName { padding: 9px 10px; font-size: 13px; font-weight: 500; }
+.limitHan { padding: 9px 4px; font-size: 10px; color: var(--muted); }
+.limitVal { padding: 7px 4px; text-align: center; font-size: 11px; }
+.refCard { padding: 12px 13px; display: flex; flex-direction: column; gap: 12px; }
+.refHr { height: 1px; background: var(--hairline); }
+.refVr { width: 1px; background: var(--hairline); }
+.refCols { display: flex; gap: 16px; }
+.refTitle { font-size: 10px; color: var(--faint); letter-spacing: 0.05em; }
+.refGroup { display: flex; flex-direction: column; gap: 5px; }
+.refGroupGrow { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.refGrid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; font-size: 12px; }
+.refGridPair { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; font-size: 12px; }
+.refColHead { text-align: center; color: var(--muted); font-size: 10px; }
+.refRowHead { text-align: left; color: var(--muted); font-size: 10px; }
+.refVal { text-align: center; color: var(--ink); }
+.refZero { color: var(--muted); }
+
+/* ── PC 와이드 표 ── */
+.wideCard { overflow: hidden; margin-bottom: 16px; }
+.wideHead { display: grid; grid-template-columns: repeat(4, 1fr) 62px repeat(4, 1fr); background: var(--soft); border-bottom: 1px solid var(--line-soft); font-size: 11px; }
+.wideHeadHan { padding: 7px 4px; text-align: center; color: var(--muted); }
+.wideHeadFu { padding: 7px 4px; text-align: center; color: var(--ink); background: #e6e1d7; }
+.wideSideRow { display: grid; grid-template-columns: repeat(4, 1fr) 62px repeat(4, 1fr); border-bottom: 1px solid var(--line-soft); font-size: 12px; font-weight: 700; }
+.wideSideCell { grid-column: span 4; padding: 7px; text-align: center; background: #faf8f4; }
+.wideSideFu { background: #e6e1d7; }
+.wideRow { display: grid; grid-template-columns: repeat(4, 1fr) 62px repeat(4, 1fr); border-bottom: 1px solid var(--hairline); font-size: 11px; }
+.wideCell { padding: 6px 3px; text-align: center; line-height: 1.45; color: var(--ink); }
+.wideCellLimit { color: var(--muted); }
+.wideTsumo { color: var(--muted); }
+.wideFuCell { padding: 6px 3px; text-align: center; background: #e6e1d7; display: flex; flex-direction: column; justify-content: center; gap: 1px; }
+.wideFuNum { font-size: 12px; font-weight: 500; color: var(--ink); }
+.wideFuNote { font-family: 'Noto Sans KR', sans-serif; font-size: 8px; color: #6e6a62; }
+.wideNote { padding: 8px 10px; font-size: 11px; color: var(--muted); }
+.wideLimitHead { display: grid; grid-template-columns: 96px repeat(5, 1fr); background: var(--soft); border-bottom: 1px solid var(--line-soft); font-size: 11px; }
+.wideLimitLabel { padding: 7px 10px; color: var(--muted); }
+.wideLimitName { padding: 7px 4px; text-align: center; color: var(--ink); font-weight: 500; }
+.wideLimitHan { color: var(--muted); font-weight: 400; font-size: 10px; }
+.wideLimitRow { display: grid; grid-template-columns: 96px repeat(5, 1fr); border-bottom: 1px solid var(--hairline); font-size: 11px; }
+.wideLimitSide { padding: 8px 10px; font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 700; }
+.wideLimitVal { padding: 8px 4px; text-align: center; line-height: 1.45; }

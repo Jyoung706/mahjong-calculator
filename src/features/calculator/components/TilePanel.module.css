@@ -1,0 +1,30 @@
+.panel { background: var(--surface); border-top: 1px solid var(--line-soft); }
+.tabs { display: flex; padding: 8px 10px 0; gap: 4px; }
+.tab {
+  flex: 1; text-align: center; padding: 9px 0; font-size: 14px; font-weight: 700; cursor: pointer;
+  border-radius: 8px 8px 0 0; border: none; background: transparent; color: var(--muted);
+  border-bottom: 2px solid transparent;
+}
+.tabActive { background: var(--card); color: var(--ink); border-bottom-color: var(--ink); }
+.grid { padding: 12px 12px 16px; min-height: 76px; display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; }
+.cellWrap { position: relative; }
+.tileBtn {
+  width: 100%; height: 52px; border-radius: 6px; border: 1px solid var(--line); cursor: pointer;
+  background-color: var(--surface); background-position: center 42%; background-size: 74% auto; background-repeat: no-repeat;
+  box-shadow: 0 1px 0 #e2ded5; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+}
+.tileFull { background-color: var(--soft); }
+.dots { height: 10px; line-height: 10px; font-size: 8px; letter-spacing: -0.02em; color: var(--muted); }
+.dotsFull { color: var(--accent); }
+.redMark { position: absolute; top: 2px; right: 3px; font-size: 8px; color: #b0563c; }
+.popover {
+  position: absolute; bottom: 58px; left: 50%; transform: translateX(-50%); z-index: 5;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 7px;
+  display: flex; gap: 6px; box-shadow: 0 6px 18px rgba(38, 36, 31, 0.16);
+}
+.opt { width: 40px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; border: none; background: none; padding: 0; }
+.optTile {
+  width: 40px; height: 54px; border-radius: 6px; border: 1px solid var(--line);
+  background-color: var(--surface); background-position: center; background-size: 72% auto; background-repeat: no-repeat;
+}
+.optLabel { font-size: 10px; color: var(--muted); }
