@@ -1,0 +1,11 @@
+.gridCard { padding: 10px; }
+.grid { display: grid; grid-template-columns: 46px repeat(4, 1fr); font-size: 11px; }
+.head { padding: 7px 4px; text-align: center; color: var(--muted); }
+.corner { padding: 7px 4px; color: var(--muted); }
+.fu { padding: 7px 4px; color: var(--muted); border-radius: 5px 0 0 5px; }
+.fuHit { color: var(--ink); background: var(--soft); }
+.cell { padding: 7px 3px; text-align: center; border-radius: 5px; color: var(--ink); }
+.soft { background: var(--soft); }
+.hit { background: var(--accent); color: var(--surface); }
+.mine { background: var(--accent-bg); color: var(--accent); }
+.limit { color: var(--muted); }

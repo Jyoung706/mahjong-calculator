@@ -1,0 +1,7 @@
+.page { position: relative; overflow: hidden; }
+.headerRight { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.qNo { font-size: 12px; color: var(--muted); }
+.streak {
+  font-size: 11px; color: var(--accent); border: 1px solid #e8d7d0;
+  background: var(--accent-bg); border-radius: 4px; padding: 2px 7px;
+}

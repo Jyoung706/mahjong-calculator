@@ -9,6 +9,7 @@ import { HomePage } from '../features/home/HomePage';
 import { CalculatorPage } from '../features/calculator/CalculatorPage';
 import { RulesPage } from '../features/rules/RulesPage';
 import { ScoreTablePage } from '../features/scoreTable/ScoreTablePage';
+import { QuizPage } from '../features/quiz/QuizPage';
 import { useRules } from '../features/rules/useRules';
 
 const rootRoute = createRootRoute({ component: Outlet });
@@ -23,6 +24,7 @@ const homeRoute = createRoute({
         onStartCalculator={() => navigate({ to: '/calculator' })}
         onOpenRules={() => navigate({ to: '/rules' })}
         onOpenScoreTable={() => navigate({ to: '/score-table' })}
+        onStartQuiz={() => navigate({ to: '/quiz' })}
       />
     );
   },
@@ -57,8 +59,18 @@ const scoreTableRoute = createRoute({
   },
 });
 
+const quizRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/quiz',
+  component: function Quiz() {
+    const navigate = useNavigate();
+    const { rules } = useRules();
+    return <QuizPage rules={rules} onBack={() => navigate({ to: '/' })} />;
+  },
+});
+
 export const router = createRouter({
-  routeTree: rootRoute.addChildren([homeRoute, calculatorRoute, rulesRoute, scoreTableRoute]),
+  routeTree: rootRoute.addChildren([homeRoute, calculatorRoute, rulesRoute, scoreTableRoute, quizRoute]),
   defaultNotFoundComponent: () => null,
 });
 

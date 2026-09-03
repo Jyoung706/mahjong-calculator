@@ -1,6 +1,6 @@
 import type { ScoreResult, Wind } from '../../../../engine/types';
-import { calcPayment } from '../../../../engine/score';
 import { formatTileText } from '../../../lib/tileAssets';
+import { ScoreGrid } from '../../../components/ScoreGrid';
 import { cx } from '../../../lib/cx';
 import s from './DetailSheet.module.css';
 
@@ -14,9 +14,6 @@ interface Props {
   seatWind: Wind;
   onClose: () => void;
 }
-
-const GRID_FU = [20, 25, 30, 40, 50, 60];
-const GRID_HAN = [1, 2, 3, 4];
 
 export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWind, seatWind, onClose }: Props) {
   const ok = result?.valid === true;
@@ -57,7 +54,13 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
                 {result.fuBreakdown.map((f, i) => <Line key={i} name={formatTileText(f.label, roundWind, seatWind)} val={`${f.fu}부`} />)}
                 <Line name="절상 후" val={`${result.fu}부`} bold />
               </Block>
-              <ScoreGrid han={result.han} fu={result.fu} isDealer={isDealer} isTsumo={isTsumo} limited={!!result.limitName} />
+              <div className={s.block}>
+                <div className={s.blockHead}>
+                  <div className={s.blockTitle}>점수표 대조</div>
+                  <div className={s.blockRight}>{result.limitName ? '판수가 높아 고정 점수' : `현재: ${result.han}판 ${result.fu}부`}</div>
+                </div>
+                <ScoreGrid han={result.han} fu={result.fu} isDealer={isDealer} isTsumo={isTsumo} limited={!!result.limitName} />
+              </div>
             </>
           )}
 
@@ -86,52 +89,5 @@ function Line({ name, val, bold = false }: { name: string; val: string; bold?: b
       <span className={s.lineName}>{name}</span>
       <span className={`mono ${s.lineVal}`}>{val}</span>
     </div>
-  );
-}
-
-/** 점수표 대조 — 엔진 calcPayment로 셀을 동적 생성 */
-function ScoreGrid({ han, fu, isDealer, isTsumo, limited }: { han: number; fu: number; isDealer: boolean; isTsumo: boolean; limited: boolean }) {
-  const cell = (f: number, h: number) => {
-    const r = calcPayment({ han: h, fu: f, yakumanMultiplier: 0, isDealer, isTsumo, honba: 0, riichiSticks: 0, kazoeYakuman: true });
-    if (r.limitName) return '만관';
-    return isTsumo
-      ? (isDealer ? `${r.payment.tsumoFromNonDealer}올` : `${r.payment.tsumoFromNonDealer}/${r.payment.tsumoFromDealer}`)
-      : String(r.payment.ron);
-  };
-  const hitHan = limited ? -1 : Math.min(4, han);
-
-  return (
-    <div className={s.block}>
-      <div className={s.blockHead}>
-        <div className={s.blockTitle}>점수표 대조</div>
-        <div className={s.blockRight}>{limited ? '판수가 높아 고정 점수' : `현재: ${han}판 ${fu}부`}</div>
-      </div>
-      <div className={`card ${s.gridCard}`}>
-        <div className={`mono ${s.grid}`}>
-          <div className={s.gridCorner}>부\판</div>
-          {GRID_HAN.map((h) => <div key={h} className={s.gridHead}>{h}판</div>)}
-          {GRID_FU.map((f) => (
-            <FuRow key={f} f={f} cell={cell} hitHan={hitHan} hitFu={fu} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FuRow({ f, cell, hitHan, hitFu }: { f: number; cell: (f: number, h: number) => string; hitHan: number; hitFu: number }) {
-  return (
-    <>
-      <div className={cx(s.gFu, f === hitFu && s.gFuHit)}>{f}</div>
-      {GRID_HAN.map((h) => {
-        const hit = f === hitFu && h === hitHan;
-        const v = (f === 20 || f === 25) && h === 1 ? '–' : cell(f, h);
-        return (
-          <div key={h} className={cx(s.gCell, hit ? s.gHit : (f === hitFu || h === hitHan) && s.gSoft, !hit && v === '만관' && s.gLimit)}>
-            {v}
-          </div>
-        );
-      })}
-    </>
   );
 }

@@ -14,10 +14,12 @@ export function HomePage({
   onStartCalculator,
   onOpenRules,
   onOpenScoreTable,
+  onStartQuiz,
 }: {
   onStartCalculator: () => void;
   onOpenRules: () => void;
   onOpenScoreTable: () => void;
+  onStartQuiz: () => void;
 }) {
   return (
     <div className='page'>
@@ -53,20 +55,17 @@ export function HomePage({
           </div>
         </button>
 
-        <div className={`${s.cardBtn} ${s.cardStatic}`}>
+        <button type='button' onClick={onStartQuiz} className={`${s.cardBtn} ${s.cardQuiz}`}>
           <div className={s.cardCol}>
-            <div className={s.cardTitleRow}>
-              <div className={s.cardTitle}>점수 퀴즈</div>
-              <span className={s.badge}>준비중</span>
-            </div>
+            <div className={s.cardTitle}>점수 퀴즈</div>
             <div className={s.cardDesc}>
               랜덤으로 만들어진 패의 판·부를
               <br />
               직접 맞히며 연습
             </div>
           </div>
-          <div className={s.arrowDim}>→</div>
-        </div>
+          <div className={s.arrow}>→</div>
+        </button>
 
         <button type='button' onClick={onOpenScoreTable} className={s.rowBtn}>
           <div className={s.rowCol}>

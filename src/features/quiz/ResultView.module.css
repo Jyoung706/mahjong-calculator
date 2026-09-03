@@ -1,0 +1,26 @@
+.summary { padding: 26px 18px 20px; background: var(--surface); border-bottom: 1px solid var(--line-soft); display: flex; flex-direction: column; gap: 6px; }
+.summarySub { font-size: 13px; color: var(--muted); }
+.scoreRow { display: flex; align-items: baseline; gap: 8px; }
+.score { font-size: 44px; font-weight: 500; line-height: 1; letter-spacing: -0.02em; }
+.scoreOf { font-size: 16px; color: var(--muted); }
+.comment { font-size: 13px; color: var(--muted); }
+.body { flex: 1; overflow: auto; padding: 16px 16px 20px; }
+.section { margin-bottom: 16px; }
+.sectionTitle { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; margin-bottom: 8px; }
+.rateCard { padding: 14px; display: flex; flex-direction: column; gap: 13px; }
+.rateRow { display: flex; flex-direction: column; gap: 6px; }
+.rateHead { display: flex; justify-content: space-between; font-size: 12px; }
+.rateNum { color: var(--muted); }
+.rateNumBad { color: var(--accent); }
+.rateTrack { height: 6px; border-radius: 3px; background: var(--hairline); overflow: hidden; }
+.rateFill { height: 6px; background: var(--ink); }
+.rateFillBad { background: var(--accent); }
+.wrongList { overflow: hidden; }
+.wrongItem { padding: 12px 14px; border-bottom: 1px solid var(--hairline); display: flex; align-items: center; gap: 10px; }
+.wrongItem:last-child { border-bottom: none; }
+.wrongTiles { display: flex; gap: 3px; }
+.wrongText { flex: 1; font-size: 12px; color: #4a463f; }
+.wrongDiff { color: var(--accent); }
+.footer { padding: 12px 16px 16px; background: var(--surface); border-top: 1px solid var(--line-soft); display: flex; gap: 8px; }
+.againBtn { flex: 1; height: 50px; border-radius: 10px; border: none; background: var(--ink); color: #f7f6f3; font-size: 15px; font-weight: 700; cursor: pointer; }
+.homeBtn { width: 100px; height: 50px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); font-size: 14px; color: #4a463f; cursor: pointer; }
