@@ -1,13 +1,40 @@
 <!doctype html>
 <html lang="ko">
   <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>판부 — 리치마작 점수 계산기</title>
+    <meta
+      name="description"
+      content="리치마작 점수 계산기 판부(判符). 손패를 그대로 입력하면 역·판수·부수·지불 점수를 자동 계산하고 계산 내역까지 보여줍니다. 판부 점수표와 부수 계산 참고표 제공."
+    />
+    <meta name="keywords" content="마작 점수 계산기, 리치마작, 점수 계산, 판수, 부수, 마작 점수표, 야쿠, 역 계산" />
+
+    <!-- Open Graph (공유 미리보기) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="판부 — 리치마작 점수 계산기" />
+    <meta property="og:description" content="손패를 그대로 입력하면 역·판·부·지불 점수를 자동 계산. 계산 내역과 점수표까지." />
+    <meta property="og:image" content="/icon/logo.png" />
+    <meta property="og:locale" content="ko_KR" />
+
     <link rel="icon" type="image/png" href="/icon/default_mode_icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "판부",
+      "alternateName": "리치마작 점수 계산기",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko",
+      "description": "리치마작 손패를 입력하면 역·판수·부수·지불 점수를 자동 계산하는 웹 계산기",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
