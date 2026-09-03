@@ -2,8 +2,6 @@
 import { test } from 'vitest';
 import { calculateScore } from '../engine';
 
-// TODO: "1m1m1m 456p 789p 中中中 5s" 표기 → Tile[] 파서 (테스트 편의용)
-
 test.todo('[1] 리치+中 → 2판 50부 3200');
 test.todo('[2] 핑후 쯔모 20부 고정 → 3판 700/1300');
 test.todo('[3] 白폰 → 1판 30부 1000');

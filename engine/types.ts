@@ -1,5 +1,8 @@
 // 명세 §3 입력, §10 출력 모델
-export type Tile = string; // '1m'~'9m', '1p'~'9p', '1s'~'9s', '1z'~'7z'
+type Digit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type SuitTile = `${Digit}${'m' | 'p' | 's'}`; // 수패
+export type HonorTile = `${1 | 2 | 3 | 4 | 5 | 6 | 7}z`; // 東南西北白發中
+export type Tile = SuitTile | HonorTile;
 export type Wind = '1z' | '2z' | '3z' | '4z';
 
 export interface Meld {
