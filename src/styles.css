@@ -1,0 +1,38 @@
+:root {
+  --bg: #efece5;
+  --card: #f7f6f3;
+  --surface: #fffefb;
+  --ink: #26241f;
+  --muted: #8a857c;
+  --faint: #a9a49b;
+  --line: #ddd8ce;
+  --line-soft: #e4e0d8;
+  --hairline: #f0ede6;
+  --soft: #f2efe8;
+  --seg: #e9e5dc;
+  --accent: #a8543a;
+  --accent-bg: #f6ebe6;
+  --mono: 'IBM Plex Mono', monospace;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Noto Sans KR', system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+.mono { font-family: var(--mono); }
+.section-label { font-size: 13px; font-weight: 700; }
+.hint { font-weight: 400; color: var(--muted); font-size: 11px; }
+.card { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 10px; }
+.notice { padding: 8px 11px; border-radius: 8px; background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+
+/* 점수표 — 모바일/PC 반응형 */
+.st-container { max-width: 430px; }
+.wide-only { display: none !important; }
+@media (min-width: 860px) {
+  .st-container { max-width: 860px; }
+  .mobile-only { display: none !important; }
+  .wide-only { display: block !important; }
+}
