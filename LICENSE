@@ -2,22 +2,26 @@ Copyright (c) 2026 Jyoung706. All rights reserved.
 
 판부 (Panbu) — Riichi Mahjong Score Calculator
 
-This software is SOURCE-AVAILABLE, NOT OPEN SOURCE. Reading the code is
-welcome; earning money from it without permission is not.
+This software is SOURCE-AVAILABLE, NOT OPEN SOURCE. Reading, forking, and
+modifying the code is welcome; running it as a public service or earning
+money from it without permission is not.
 
 
 1. WHAT YOU MAY DO
 
-You may view, clone, fork, run, and modify the source code for personal use,
-study, evaluation, and other non-commercial purposes. You may publish your
-modifications for those same purposes, provided that this notice is kept
-intact and the origin of the work is stated.
+You may view, clone, fork, and modify the source code, and run it on your own
+machine, for personal use, study, evaluation, and other non-commercial
+purposes. You may publish your modified SOURCE CODE for those same purposes,
+provided that this notice is kept intact and the origin of the work is stated.
+
+Publishing source code is not the same as running a service: deploying the
+software where the public can reach it is covered by section 2(e) below.
 
 
 2. WHAT REQUIRES PERMISSION
 
-Any commercial use of this software, in whole or in part, requires prior
-written consent from the copyright holder. Commercial use includes, without
+The following require prior written consent from the copyright holder,
+whether the software is used in whole or in part, and include without
 limitation:
 
   (a) selling, licensing, or sublicensing the software or any derivative
@@ -26,7 +30,9 @@ limitation:
       or advertising-supported service;
   (c) incorporating it into a product or service that is offered for a fee;
   (d) any other use intended for or directed toward commercial advantage or
-      monetary compensation.
+      monetary compensation;
+  (e) operating a publicly accessible instance of the software, or any
+      derivative of it, whether or not a fee is charged.
 
 Redistributing the software, in whole or in part, as your own work is
 prohibited regardless of whether money changes hands.
