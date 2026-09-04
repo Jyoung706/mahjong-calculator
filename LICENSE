@@ -1,6 +1,65 @@
 Copyright (c) 2026 Jyoung706. All rights reserved.
 
-This software and its source code are proprietary.
-No permission is granted to use, copy, modify, or distribute this software,
-in whole or in part, for any purpose without prior written consent
-from the copyright holder.
+판부 (Panbu) — Riichi Mahjong Score Calculator
+
+This software is SOURCE-AVAILABLE, NOT OPEN SOURCE. Reading the code is
+welcome; earning money from it without permission is not.
+
+
+1. WHAT YOU MAY DO
+
+You may view, clone, fork, run, and modify the source code for personal use,
+study, evaluation, and other non-commercial purposes. You may publish your
+modifications for those same purposes, provided that this notice is kept
+intact and the origin of the work is stated.
+
+
+2. WHAT REQUIRES PERMISSION
+
+Any commercial use of this software, in whole or in part, requires prior
+written consent from the copyright holder. Commercial use includes, without
+limitation:
+
+  (a) selling, licensing, or sublicensing the software or any derivative
+      of it;
+  (b) operating it, or any derivative of it, as a paid, subscription-based,
+      or advertising-supported service;
+  (c) incorporating it into a product or service that is offered for a fee;
+  (d) any other use intended for or directed toward commercial advantage or
+      monetary compensation.
+
+Redistributing the software, in whole or in part, as your own work is
+prohibited regardless of whether money changes hands.
+
+
+3. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+
+4. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+
+
+5. THIRD-PARTY ASSETS
+
+The mahjong tile images under public/tiles/ are from
+https://github.com/FluffyStuff/riichi-mahjong-tiles and are dedicated to the
+public domain under CC0 1.0. They are not covered by this license.
+
+6. CONTRIBUTIONS
+
+By submitting code, documentation, or other material to this project, you
+grant the copyright holder a perpetual, worldwide, irrevocable, royalty-free
+license to use, modify, sublicense, and commercially exploit your submission,
+and you confirm that you have the right to grant this.
+
+
+For commercial licensing inquiries, contact the copyright holder through
+https://github.com/Jyoung706
