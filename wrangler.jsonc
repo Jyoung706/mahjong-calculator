@@ -1,8 +1,13 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "panbu",
+  "name": "mahjong-calculator",
   "main": "worker/index.ts",
   "compatibility_date": "2026-09-01",
+
+  // 커스텀 도메인을 붙이기 전까지 <name>.<subdomain>.workers.dev 로 접속
+  "workers_dev": true,
+  // 버전별 공개 미리보기 URL은 사용하지 않음 (검색엔진 중복 색인 방지)
+  "preview_urls": false,
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
