@@ -9,7 +9,15 @@ export interface Env {
 
 export default {
   async fetch(request, env) {
-    const { pathname } = new URL(request.url);
+    const url = new URL(request.url);
+
+    // www 는 정식 주소로 통일 (검색엔진 중복 색인 방지)
+    if (url.hostname.startsWith('www.')) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
+
+    const { pathname } = url;
 
     if (pathname === '/api/contact') {
       if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
