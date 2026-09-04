@@ -13,9 +13,10 @@ interface Props {
   roundWind: Wind;
   seatWind: Wind;
   onClose: () => void;
+  onContact: () => void;
 }
 
-export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWind, seatWind, onClose }: Props) {
+export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWind, seatWind, onClose, onContact }: Props) {
   const ok = result?.valid === true;
   return (
     <>
@@ -65,6 +66,14 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
           )}
 
           <div onClick={onClose} className={s.returnBtn}>패 수정으로 돌아가기</div>
+
+          <button type="button" onClick={onContact} className={s.askBox}>
+            <div className={s.askCol}>
+              <div className={s.askTitle}>계산이 이상한가요?</div>
+              <div className={s.askDesc}>현재 손패·룰 설정·결과가 함께 전달됩니다</div>
+            </div>
+            <div className={s.askArrow}>→</div>
+          </button>
         </div>
       </div>
     </>

@@ -10,9 +10,10 @@ interface Props {
   onToggle: (key: keyof Rules) => void;
   onReset: () => void;
   onBack: () => void;
+  onContact: () => void;
 }
 
-export function RulesPage({ rules, changedCount, onToggle, onReset, onBack }: Props) {
+export function RulesPage({ rules, changedCount, onToggle, onReset, onBack, onContact }: Props) {
   return (
     <div className="page">
       <header className="page-header">
@@ -54,6 +55,14 @@ export function RulesPage({ rules, changedCount, onToggle, onReset, onBack }: Pr
 
         <button type="button" onClick={onReset} disabled={changedCount === 0} className={cx(s.resetBtn, changedCount > 0 && s.resetActive)}>
           기본값으로 되돌리기
+        </button>
+
+        <button type="button" onClick={onContact} className={s.askBox}>
+          <div className={s.askCol}>
+            <div className={s.askTitle}>필요한 룰이 없나요?</div>
+            <div className={s.askDesc}>사용하시는 룰을 알려주시면 추가하겠습니다</div>
+          </div>
+          <div className={s.askArrow}>→</div>
         </button>
       </div>
     </div>

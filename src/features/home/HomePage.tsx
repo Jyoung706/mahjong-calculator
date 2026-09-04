@@ -15,11 +15,13 @@ export function HomePage({
   onOpenRules,
   onOpenScoreTable,
   onStartQuiz,
+  onOpenContact,
 }: {
   onStartCalculator: () => void;
   onOpenRules: () => void;
   onOpenScoreTable: () => void;
   onStartQuiz: () => void;
+  onOpenContact: () => void;
 }) {
   return (
     <div className='page'>
@@ -82,12 +84,25 @@ export function HomePage({
           </div>
           <div className={s.rowArrow}>→</div>
         </button>
+
+        <button type='button' onClick={onOpenContact} className={s.contactLink}>
+          <span>버그 제보 · 문의하기</span>
+          <span className={s.contactArrow}>→</span>
+        </button>
       </div>
 
       <div className={s.spacer} />
 
+      <div className={s.intro}>
+        <div className={s.introTitle}>마작 초보이신가요?</div>
+        <div className={s.introBody}>
+          오프라인에서 점수 계산이 막막했다면 손패를 그대로 입력해 보세요.
+          역과 부수를 하나씩 짚어가며 계산 과정까지 보여줍니다.
+        </div>
+      </div>
+
       <div className={s.footer}>
-        <div className={`mono ${s.copyright}`}>© 2026 Jun Young JEON. All rights reserved.</div>
+        <div className={`mono ${s.copyright}`}>© 2026 Jyoung706. All rights reserved.</div>
       </div>
     </div>
   );

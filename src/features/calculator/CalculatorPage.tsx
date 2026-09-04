@@ -3,6 +3,7 @@ import { calculateScore } from '../../../engine';
 import { decompose } from '../../../engine/decompose';
 import { ALL_TILES } from '../../../engine/tiles';
 import type { Rules } from '../../../engine/types';
+import type { ContactAttachment } from '../contact/types';
 import { useCalculatorState, toWinInput } from './useCalculatorState';
 import { SettingsBar } from './components/SettingsBar';
 import { MeldSection } from './components/MeldSection';
@@ -13,7 +14,11 @@ import { DetailSheet } from './components/DetailSheet';
 import { TilePanel } from './components/TilePanel';
 import s from './CalculatorPage.module.css';
 
-export function CalculatorPage({ rules, onBack }: { rules: Rules; onBack: () => void }) {
+export function CalculatorPage({ rules, onBack, onContact }: {
+  rules: Rules;
+  onBack: () => void;
+  onContact: (attachment: ContactAttachment) => void;
+}) {
   const c = useCalculatorState();
   const { state: st } = c;
   const [sheet, setSheet] = useState(false);
@@ -29,6 +34,12 @@ export function CalculatorPage({ rules, onBack }: { rules: Rules; onBack: () => 
     const melds = st.melds.map((m) => ({ type: m.type, tiles: m.tiles.map((t) => t.id).sort() }));
     return ALL_TILES.filter((t) => c.countOf(t) < 4 && decompose([...hand, t], melds).length > 0);
   }, [awaiting, st.hand, st.melds]);
+
+  // 문의 첨부 — 완성된 입력이면 손패·결과까지, 아니면 룰만
+  const buildAttachment = (): ContactAttachment =>
+    c.ready && result
+      ? { kind: 'calculation', rules, input: toWinInput(st), result }
+      : { kind: 'rules', rules };
 
   const missing = st.hand.length < c.handNeed ? `손패 ${c.handNeed - st.hand.length}장 더 입력` : '화료패 1장을 지정하세요';
   const isDealer = st.seatWind === '1z';
@@ -65,7 +76,7 @@ export function CalculatorPage({ rules, onBack }: { rules: Rules; onBack: () => 
       <ScoreBar result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} isMenzen={isMenzen} onOpenSheet={() => setSheet(true)} />
       <TilePanel countOf={c.countOf} redUsed={c.redUsed} onTap={c.tapPanel} />
 
-      <DetailSheet open={sheet} result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} roundWind={st.roundWind} seatWind={st.seatWind} onClose={() => setSheet(false)} />
+      <DetailSheet open={sheet} result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} roundWind={st.roundWind} seatWind={st.seatWind} onClose={() => setSheet(false)} onContact={() => onContact(buildAttachment())} />
     </div>
   );
 }

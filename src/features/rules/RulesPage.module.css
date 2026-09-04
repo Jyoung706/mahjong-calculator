@@ -22,3 +22,13 @@
   font-size: 14px; font-weight: 500; border: 1px solid var(--line); color: #c4bfb5; cursor: default;
 }
 .resetActive { border-color: var(--accent); color: var(--accent); cursor: pointer; }
+
+.askBox {
+  width: 100%; margin-top: 12px; border: 1px solid var(--line-soft); border-radius: 9px;
+  padding: 12px 14px; background: transparent; display: flex; align-items: center;
+  justify-content: space-between; cursor: pointer; text-align: left; font: inherit;
+}
+.askCol { display: flex; flex-direction: column; gap: 3px; }
+.askTitle { font-size: 13px; color: #4a463f; }
+.askDesc { font-size: 11px; color: var(--faint); }
+.askArrow { font-size: 13px; color: var(--faint); }
