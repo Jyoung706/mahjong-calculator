@@ -1,5 +1,5 @@
 import type { ScoreResult, Wind } from '../../../../engine/types';
-import { formatTileText } from '../../../lib/tileAssets';
+import { errorLabel, fuLabel, LIMIT_LABEL, YAKU_LABEL, YAKUMAN_LABEL } from '../../../lib/scoreLabels';
 import { ScoreGrid } from '../../../components/ScoreGrid';
 import { cx } from '../../../lib/cx';
 import s from './DetailSheet.module.css';
@@ -36,7 +36,7 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
 
         <div className={s.summary}>
           <div className={`mono ${s.summarySub}`}>
-            {ok ? `${result.han}판 ${result.limitName ?? `${result.fu}부`} · ${isDealer ? '친' : '자'} · ${isTsumo ? '쯔모' : '론'}` : '—'}
+            {ok ? `${result.han}판 ${result.limit ? LIMIT_LABEL[result.limit] : `${result.fu}부`} · ${isDealer ? '친' : '자'} · ${isTsumo ? '쯔모' : '론'}` : '—'}
           </div>
           <div className={s.headlineRow}>
             <div className={`mono ${s.headline}`}>{ok ? result.payment.total.toLocaleString() : '––––'}</div>
@@ -45,28 +45,28 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
         </div>
 
         <div className={s.body}>
-          {!ok && <div className={`notice ${s.errNotice}`}>{result ? result.error : missing}</div>}
+          {!ok && <div className={`notice ${s.errNotice}`}>{result?.error ? errorLabel(result.error) : missing}</div>}
 
           {ok && result.yakuman.length > 0 && (
             <Block title="성립한 역만" right="">
-              {result.yakuman.map((y) => <Line key={y.name} name={y.name} val={y.multiplier > 1 ? '더블' : '역만'} />)}
+              {result.yakuman.map((y) => <Line key={y.id} name={YAKUMAN_LABEL[y.id]} val={y.multiplier > 1 ? '더블' : '역만'} />)}
             </Block>
           )}
           {ok && result.yakuman.length === 0 && (
             <>
               <Block title="성립한 역" right={`합 ${result.han}판`}>
-                {result.yaku.map((y) => <Line key={y.name} name={y.name} val={`${y.han}판`} />)}
+                {result.yaku.map((y) => <Line key={y.id} name={YAKU_LABEL[y.id]} val={`${y.han}판`} />)}
               </Block>
               <Block title="부 계산" right={`${result.fu}부`}>
-                {result.fuBreakdown.map((f, i) => <Line key={i} name={formatTileText(f.label, roundWind, seatWind)} val={`${f.fu}부`} />)}
+                {result.fuBreakdown.map((f, i) => <Line key={i} name={fuLabel(f, roundWind, seatWind)} val={`${f.fu}부`} />)}
                 <Line name="절상 후" val={`${result.fu}부`} bold />
               </Block>
               <div className={s.block}>
                 <div className={s.blockHead}>
                   <div className={s.blockTitle}>점수표 대조</div>
-                  <div className={s.blockRight}>{result.limitName ? '판수가 높아 고정 점수' : `현재: ${result.han}판 ${result.fu}부`}</div>
+                  <div className={s.blockRight}>{result.limit ? '판수가 높아 고정 점수' : `현재: ${result.han}판 ${result.fu}부`}</div>
                 </div>
-                <ScoreGrid han={result.han} fu={result.fu} isDealer={isDealer} isTsumo={isTsumo} limited={!!result.limitName} />
+                <ScoreGrid han={result.han} fu={result.fu} isDealer={isDealer} isTsumo={isTsumo} limited={!!result.limit} />
                 {settled && <div className={s.gridNote}>표의 값은 본장·리치봉을 뺀 기본 점수입니다</div>}
               </div>
             </>

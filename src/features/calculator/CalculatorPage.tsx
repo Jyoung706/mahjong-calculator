@@ -4,6 +4,7 @@ import { decompose } from '../../../engine/decompose';
 import { ALL_TILES } from '../../../engine/tiles';
 import type { Rules } from '../../../engine/types';
 import type { ContactAttachment } from '../contact/types';
+import { DORA_IDS, YAKU_LABEL } from '../../lib/scoreLabels';
 import { useCalculatorState, toWinInput, sticksOnTable, isMenzen } from './useCalculatorState';
 import { SettingsBar } from './components/SettingsBar';
 import { MeldSection } from './components/MeldSection';
@@ -46,7 +47,7 @@ export function CalculatorPage({ rules, onBack, onContact }: {
   const menzen = isMenzen(st);
   const sticks = sticksOnTable(st); // 표시용 — 본인 리치봉까지 합친 실제 회수 개수
   const doraHan = result?.valid
-    ? result.yaku.filter((y) => ['도라', '우라도라', '적도라'].includes(y.name)).map((y) => `${y.name} ${y.han}`).join(' · ') || '도라 없음'
+    ? result.yaku.filter((y) => DORA_IDS.includes(y.id)).map((y) => `${YAKU_LABEL[y.id]} ${y.han}`).join(' · ') || '도라 없음'
     : '';
 
   return (

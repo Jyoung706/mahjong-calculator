@@ -3,6 +3,7 @@ import { DEFAULT_RULES } from '../../../engine';
 import type { Rules } from '../../../engine/types';
 import { TileView } from '../../components/Tile';
 import { WIND_LABELS } from '../../lib/tileAssets';
+import { errorLabel, LIMIT_LABEL } from '../../lib/scoreLabels';
 import { cx } from '../../lib/cx';
 import { CATEGORIES, type ContactAttachment, type ContactCategory, type ContactPayload } from './types';
 import s from './ContactPage.module.css';
@@ -187,11 +188,11 @@ function AttachmentCard({ attachment }: { attachment: ContactAttachment }) {
             <Fact k="화료" v={input.isTsumo ? '쯔모' : '론'} />
             {result?.valid ? (
               <>
-                <Fact k="계산 결과" v={result.yakuman.length > 0 ? String(result.limitName) : `${result.han}판 ${result.fu}부`} />
+                <Fact k="계산 결과" v={result.yakuman.length > 0 && result.limit ? LIMIT_LABEL[result.limit] : `${result.han}판 ${result.fu}부`} />
                 <Fact k="점수" v={result.payment.total.toLocaleString()} />
               </>
             ) : (
-              <Fact k="계산 결과" v={result?.error ?? '—'} />
+              <Fact k="계산 결과" v={result?.error ? errorLabel(result.error) : '—'} />
             )}
           </div>
           <div className={s.hr} />

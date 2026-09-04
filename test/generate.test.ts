@@ -18,7 +18,7 @@ test('일반: 30문제 전부 유효, 만관 미만', () => {
   for (let i = 0; i < 30; i++) {
     const p = generateProblem('normal', DEFAULT_RULES);
     expect(p.result.valid).toBe(true);
-    expect(p.result.limitName).toBeUndefined();
+    expect(p.result.limit).toBeUndefined();
   }
 });
 

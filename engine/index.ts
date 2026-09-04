@@ -1,5 +1,5 @@
 // 파이프라인 진입점 (§4): 검증 → 분해 → (역만 | 역+도라 → 부수) → 점수 → 최대 채택
-import type { WinInput, Rules, ScoreResult, Context } from './types';
+import type { WinInput, Rules, ScoreError, ScoreResult, Context } from './types';
 import { validate } from './tiles';
 import { decompose, winPlacements } from './decompose';
 import { detectYaku } from './yaku';
@@ -27,7 +27,7 @@ export function calculateScore(input: WinInput, rules: Rules = DEFAULT_RULES): S
   if (error) return invalid(error);
 
   const decomps = decompose([...input.concealed, input.winningTile], input.melds);
-  if (decomps.length === 0) return invalid('화료형이 아님 (텐파이 아님)');
+  if (decomps.length === 0) return invalid({ id: 'notWinningShape' });
 
   const isMenzen = input.melds.every((m) => m.type === 'ankan');
   const isDealer = input.seatWind === '1z';
@@ -47,11 +47,11 @@ export function calculateScore(input: WinInput, rules: Rules = DEFAULT_RULES): S
       } else {
         const yaku = detectYaku(d, ctx);
         if (yaku.length === 0) continue; // 역 없음 — 도라만으로는 화료 불가 (§6.4)
-        const { fu, breakdown } = calcFu(d, ctx, yaku.some((y) => y.name === '핑후'));
+        const { fu, breakdown } = calcFu(d, ctx, yaku.some((y) => y.id === 'pinfu'));
         const { dora, ura, aka } = countDora(allTiles, input);
-        if (dora > 0) yaku.push({ name: '도라', han: dora });
-        if (ura > 0) yaku.push({ name: '우라도라', han: ura });
-        if (rules.akaDora && aka > 0) yaku.push({ name: '적도라', han: aka });
+        if (dora > 0) yaku.push({ id: 'dora', han: dora });
+        if (ura > 0) yaku.push({ id: 'uraDora', han: ura });
+        if (rules.akaDora && aka > 0) yaku.push({ id: 'akaDora', han: aka });
         const han = yaku.reduce((a, y) => a + y.han, 0);
         const pay = calcPayment({ ...payBase(input, isDealer, rules), han, fu, yakumanMultiplier: 0 });
         candidate = { valid: true, error: undefined, yaku, yakuman: [], han, fu, fuBreakdown: breakdown, ...pay };
@@ -61,7 +61,7 @@ export function calculateScore(input: WinInput, rules: Rules = DEFAULT_RULES): S
     }
   }
 
-  return best ?? invalid('역 없음');
+  return best ?? invalid({ id: 'noYaku' });
 }
 
 const payBase = (input: WinInput, isDealer: boolean, rules: Rules) => ({
@@ -77,6 +77,6 @@ const better = (a: ScoreResult, b: ScoreResult) =>
   : a.han !== b.han ? a.han > b.han
   : a.fu > b.fu;
 
-function invalid(error: string): ScoreResult {
+function invalid(error: ScoreError): ScoreResult {
   return { valid: false, error, yaku: [], yakuman: [], han: 0, fu: 0, fuBreakdown: [], basePoints: 0, payment: { total: 0 } };
 }

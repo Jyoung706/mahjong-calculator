@@ -1,4 +1,4 @@
-import type { ScoreResult } from './types';
+import type { LimitId, ScoreResult } from './types';
 
 export interface PaymentInput {
   han: number;
@@ -14,30 +14,30 @@ export interface PaymentInput {
 const roundUp100 = (x: number) => Math.ceil(x / 100) * 100;
 
 /** 점수 산출 (§9) */
-export function calcPayment(p: PaymentInput): Pick<ScoreResult, 'basePoints' | 'limitName' | 'payment'> {
+export function calcPayment(p: PaymentInput): Pick<ScoreResult, 'basePoints' | 'limit' | 'payment'> {
   let basePoints: number;
-  let limitName: ScoreResult['limitName'];
+  let limit: LimitId | undefined;
 
   if (p.yakumanMultiplier > 0) {
     basePoints = 8000 * p.yakumanMultiplier;
-    limitName = p.yakumanMultiplier >= 2 ? '더블역만' : '역만';
+    limit = p.yakumanMultiplier >= 2 ? 'doubleYakuman' : 'yakuman';
   } else if (p.han >= 13 && p.kazoeYakuman) {
     basePoints = 8000;
-    limitName = '역만';
+    limit = 'yakuman';
   } else if (p.han >= 11) {
     basePoints = 6000;
-    limitName = '삼배만';
+    limit = 'sanbaiman';
   } else if (p.han >= 8) {
     basePoints = 4000;
-    limitName = '배만';
+    limit = 'baiman';
   } else if (p.han >= 6) {
     basePoints = 3000;
-    limitName = '하네만';
+    limit = 'haneman';
   } else {
     const raw = p.fu * 2 ** (2 + p.han);
     if (p.han >= 5 || raw > 2000) {
       basePoints = 2000;
-      limitName = '만관';
+      limit = 'mangan';
     } else {
       basePoints = raw;
     }
@@ -57,5 +57,5 @@ export function calcPayment(p: PaymentInput): Pick<ScoreResult, 'basePoints' | '
     payment = { total: fromDealer + fromNonDealer * 2 + sticks, tsumoFromDealer: fromDealer, tsumoFromNonDealer: fromNonDealer };
   }
 
-  return { basePoints, limitName, payment };
+  return { basePoints, limit, payment };
 }
