@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "panbu",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // SPA: 자산에 없는 경로(/calculator 등)는 index.html을 200으로 반환
+    "not_found_handling": "single-page-application"
+  },
+  "observability": { "enabled": true }
+}

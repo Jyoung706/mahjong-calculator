@@ -1,9 +1,6 @@
-// Cloudflare Pages Function — 문의를 받아 Discord 웹훅으로 전달
-// 환경변수: DISCORD_WEBHOOK_URL (Pages 프로젝트 설정 > Variables and Secrets)
-
-interface Env {
-  DISCORD_WEBHOOK_URL: string;
-}
+// 문의를 받아 Discord 웹훅으로 전달
+// 환경변수: DISCORD_WEBHOOK_URL (Workers 설정 > Variables and Secrets에 Secret으로 등록)
+import type { Env } from './index';
 
 const CATEGORY_LABELS: Record<string, string> = {
   'wrong-result': '계산 결과가 이상함',
@@ -15,7 +12,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const MAX_MESSAGE = 2000;
 const MAX_CONTACT = 200;
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export async function handleContact(request: Request, env: Env): Promise<Response> {
   if (!env.DISCORD_WEBHOOK_URL) return json({ error: 'not_configured' }, 500);
 
   let body: Record<string, unknown>;
@@ -63,7 +60,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const res = await fetch(env.DISCORD_WEBHOOK_URL, { method: 'POST', body: form });
   if (!res.ok) return json({ error: 'delivery_failed' }, 502);
   return json({ ok: true });
-};
+}
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } });
