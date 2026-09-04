@@ -12,6 +12,8 @@ import { RulesPage } from '../features/rules/RulesPage';
 import { ScoreTablePage } from '../features/scoreTable/ScoreTablePage';
 import { QuizPage } from '../features/quiz/QuizPage';
 import { ContactPage } from '../features/contact/ContactPage';
+import { InfoPage } from '../features/info/InfoPage';
+import { PrivacyPage, PRIVACY_ENABLED } from '../features/info/PrivacyPage';
 import type { ContactAttachment, ContactCategory } from '../features/contact/types';
 import { useRules } from '../features/rules/useRules';
 
@@ -35,6 +37,7 @@ const homeRoute = createRoute({
         onOpenRules={() => navigate({ to: '/rules' })}
         onOpenScoreTable={() => navigate({ to: '/score-table' })}
         onStartQuiz={() => navigate({ to: '/quiz' })}
+        onOpenInfo={() => navigate({ to: '/info' })}
         onOpenContact={() => navigate({ to: '/contact' })}
       />
     );
@@ -117,8 +120,38 @@ const contactRoute = createRoute({
   },
 });
 
+const infoRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/info',
+  component: function Info() {
+    const navigate = useNavigate();
+    return (
+      <InfoPage
+        onBack={() => navigate({ to: '/' })}
+        onOpenRules={() => navigate({ to: '/rules' })}
+        onOpenPrivacy={() => navigate({ to: '/privacy' })}
+        onContact={() => navigate({ to: '/contact' })}
+      />
+    );
+  },
+});
+
+// 수집하는 개인정보가 생기기 전까지는 링크도 화면도 나오지 않는다.
+// PRIVACY_ENABLED 하나만 켜면 정보 화면의 링크와 이 경로가 함께 살아난다.
+const privacyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/privacy',
+  component: function Privacy() {
+    const navigate = useNavigate();
+    if (!PRIVACY_ENABLED) return null;
+    return <PrivacyPage onBack={() => navigate({ to: '/info' })} onContact={() => navigate({ to: '/contact' })} />;
+  },
+});
+
 export const router = createRouter({
-  routeTree: rootRoute.addChildren([homeRoute, calculatorRoute, rulesRoute, scoreTableRoute, quizRoute, contactRoute]),
+  routeTree: rootRoute.addChildren([
+    homeRoute, calculatorRoute, rulesRoute, scoreTableRoute, quizRoute, contactRoute, infoRoute, privacyRoute,
+  ]),
   defaultNotFoundComponent: () => null,
 });
 

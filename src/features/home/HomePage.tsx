@@ -15,12 +15,14 @@ export function HomePage({
   onOpenRules,
   onOpenScoreTable,
   onStartQuiz,
+  onOpenInfo,
   onOpenContact,
 }: {
   onStartCalculator: () => void;
   onOpenRules: () => void;
   onOpenScoreTable: () => void;
   onStartQuiz: () => void;
+  onOpenInfo: () => void;
   onOpenContact: () => void;
 }) {
   return (
@@ -85,6 +87,14 @@ export function HomePage({
           <div className={s.rowArrow}>→</div>
         </button>
 
+        <button type='button' onClick={onOpenInfo} className={s.rowBtn}>
+          <div className={s.rowCol}>
+            <div className={s.rowTitle}>정보</div>
+            <div className={s.rowDesc}>버전 · 계산 기준 · 사용한 리소스</div>
+          </div>
+          <div className={s.rowArrow}>→</div>
+        </button>
+
         <button type='button' onClick={onOpenContact} className={s.contactLink}>
           <span>버그 제보 · 문의하기</span>
           <span className={s.contactArrow}>→</span>
@@ -102,7 +112,10 @@ export function HomePage({
       </div>
 
       <div className={s.footer}>
-        <div className={`mono ${s.version}`}>판부 v{__APP_VERSION__}</div>
+        <button type='button' onClick={onOpenInfo} className={s.versionBtn}>
+          <span className='mono'>판부 v{__APP_VERSION__}</span>
+          <span className={s.versionArrow}>정보 →</span>
+        </button>
         <div className={`mono ${s.copyright}`}>© 2026 Jyoung706. All rights reserved.</div>
       </div>
     </div>
