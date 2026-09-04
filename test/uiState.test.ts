@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { normalize, toWinInput, sticksOnTable, type CalcState } from '../src/features/calculator/useCalculatorState';
+import { normalize, toWinInput, sticksOnTable, tilesUsed, type CalcState } from '../src/features/calculator/useCalculatorState';
 
 let key = 0;
 const t = (id: string) => ({ key: ++key, id: id as never, red: false });
@@ -56,5 +56,23 @@ describe('toWinInput', () => {
     const st: CalcState = { ...base, hand: [t('1m')], winTile: t('1m'), isTsumo: true, riichi: true, ippatsu: true, haitei: true, riichiSticks: 1, honba: 3 };
     const input = toWinInput(st);
     expect(input).toMatchObject({ isTsumo: true, riichi: true, ippatsu: true, haitei: true, honba: 3, riichiSticks: 2 });
+  });
+});
+
+describe('도라 표시패도 4장 제한을 나눠 쓴다', () => {
+  test('표시패로 쓴 패는 남은 장수에서 빠진다', () => {
+    // 손패 3장 + 표시패 1장 = 4장 → 같은 패를 더 넣을 수 없다
+    const st: CalcState = { ...base, hand: [t('2m'), t('2m'), t('2m')], doraInd: [t('2m')] };
+    expect(tilesUsed(st, '2m' as never)).toBe(4);
+  });
+
+  test('우라도라 표시패도 함께 센다', () => {
+    const st: CalcState = { ...base, hand: [t('5s')], doraInd: [t('5s')], uraInd: [t('5s')] };
+    expect(tilesUsed(st, '5s' as never)).toBe(3);
+  });
+
+  test('표시패와 무관한 패는 영향받지 않는다', () => {
+    const st: CalcState = { ...base, hand: [t('2m')], doraInd: [t('3m')] };
+    expect(tilesUsed(st, '2m' as never)).toBe(1);
   });
 });

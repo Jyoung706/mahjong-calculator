@@ -45,7 +45,10 @@ export function validate(input: WinInput): string | null {
   if (concealed.length + 1 + melds.length * 3 !== 14)
     return `패 매수 오류: 손패 ${concealed.length}장 (부로 ${melds.length}개면 ${13 - melds.length * 3}장이어야 함)`;
 
-  const counts = countTiles([concealed, [winningTile], ...melds.map((m) => m.tiles)].flat());
+  // 도라·우라도라 표시패도 산에서 나온 실제 패다
+  const counts = countTiles(
+    [concealed, [winningTile], ...melds.map((m) => m.tiles), input.doraIndicators, input.uraDoraIndicators].flat(),
+  );
   for (const [t, n] of Object.entries(counts)) {
     if (n > 4) return `같은 패 5장 이상: ${t} ${n}장`;
   }

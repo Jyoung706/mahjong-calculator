@@ -118,13 +118,7 @@ export function useCalculatorState() {
   /** 부로 1개당 손패 슬롯 3개 차감. 화료패는 별도 1장 */
   const handNeed = 13 - 3 * s.melds.length;
 
-  const countOf = (id: Tile) => {
-    let n = s.hand.filter((t) => t.id === id).length;
-    for (const m of s.melds) n += m.tiles.filter((t) => t.id === id).length;
-    if (s.pending) n += s.pending.tiles.filter((t) => t.id === id).length;
-    if (s.winTile?.id === id) n += 1;
-    return n;
-  };
+  const countOf = (id: Tile) => tilesUsed(s, id);
 
   const ready = s.hand.length === handNeed && s.winTile !== null;
 
@@ -141,7 +135,7 @@ export function useCalculatorState() {
     set((st) => {
       if (st.target === 'dora' || st.target === 'ura') {
         const key = st.target === 'dora' ? 'doraInd' : 'uraInd';
-        if (st[key].length >= 5) return st;
+        if (st[key].length >= 5 || tilesUsed(st, id) >= 4) return st;
         return { ...st, [key]: [...st[key], inst(id, red)], target: 'hand' };
       }
       if (st.pending) {
@@ -158,7 +152,7 @@ export function useCalculatorState() {
         const need: Partial<Record<Tile, number>> = {};
         for (const t of ids) need[t] = (need[t] ?? 0) + 1;
         for (const [t, n] of Object.entries(need)) {
-          if (countOfIn(st, t as Tile) + n > 4) return st; // 잔량 부족
+          if (tilesUsed(st, t as Tile) + n > 4) return st; // 잔량 부족
         }
         let redLeft = red;
         const tiles = ids.map((t) => {
@@ -168,7 +162,7 @@ export function useCalculatorState() {
         });
         return { ...st, pending: null, melds: [...st.melds, { key: ++uid, type, tiles }] };
       }
-      if (countOfIn(st, id) >= 4) return st;
+      if (tilesUsed(st, id) >= 4) return st;
       const need = 13 - 3 * st.melds.length;
       if (st.hand.length < need) return { ...st, hand: sortTiles([...st.hand, inst(id, red)]) };
       if (!st.winTile) return { ...st, winTile: inst(id, red) };
@@ -215,11 +209,17 @@ export function useCalculatorState() {
   };
 }
 
-function countOfIn(st: CalcState, id: Tile) {
+/**
+ * 이미 쓴 장수. 도라·우라도라 표시패도 산에서 뒤집은 실제 패이므로
+ * 손패·부로와 같은 4장 제한을 함께 나눠 쓴다.
+ */
+export function tilesUsed(st: CalcState, id: Tile) {
   let n = st.hand.filter((t) => t.id === id).length;
   for (const m of st.melds) n += m.tiles.filter((t) => t.id === id).length;
   if (st.pending) n += st.pending.tiles.filter((t) => t.id === id).length;
   if (st.winTile?.id === id) n += 1;
+  n += st.doraInd.filter((t) => t.id === id).length;
+  n += st.uraInd.filter((t) => t.id === id).length;
   return n;
 }
 

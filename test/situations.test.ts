@@ -72,3 +72,13 @@ test('연풍패 머리 부수 룰 — 30부와 40부로 갈린다', () => {
   expect(calculateScore(hand(), rules({ doubleWindPairFu4: false })).fu).toBe(30);
   expect(calculateScore(hand(), rules({ doubleWindPairFu4: true })).fu).toBe(40);
 });
+
+test('도라 표시패까지 합쳐 같은 패가 5장이면 무효', () => {
+  // 2m 안깡(4장) + 표시패 2m → 5장
+  const hand = ['5m','6m','7m','2p','3p','4p','6p','7p','5s','5s'];
+  const kan = { melds: [{ type: 'ankan', tiles: ['2m','2m','2m','2m'] as Tile[] }] };
+  expect(calculateScore(win(hand, '5p', { ...kan, doraIndicators: ['2m'] }), DEFAULT_RULES)).toMatchObject({
+    valid: false, error: '같은 패 5장 이상: 2m 5장',
+  });
+  expect(calculateScore(win(hand, '5p', { ...kan, doraIndicators: ['9p'] }), DEFAULT_RULES).valid).toBe(true);
+});
