@@ -102,6 +102,7 @@ export function HomePage({
       </div>
 
       <div className={s.footer}>
+        <div className={`mono ${s.version}`}>판부 v{__APP_VERSION__}</div>
         <div className={`mono ${s.copyright}`}>© 2026 Jyoung706. All rights reserved.</div>
       </div>
     </div>

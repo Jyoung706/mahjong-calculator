@@ -38,7 +38,7 @@ export async function handleContact(request: Request, env: Env): Promise<Respons
     `**[${CATEGORY_LABELS[category] ?? category}]**`,
     message,
     contact ? `\n회신처: \`${contact}\`` : '',
-    `\n-# ${meta.url ?? ''} · ${trim(meta.userAgent ?? '', 80)} · ${hash(ip)}`,
+    `\n-# v${meta.version ?? '?'} · ${meta.url ?? ''} · ${trim(meta.userAgent ?? '', 80)} · ${hash(ip)}`,
   ].filter(Boolean);
 
   // 첨부는 코드블록 JSON — 그대로 테스트 케이스로 재현 가능

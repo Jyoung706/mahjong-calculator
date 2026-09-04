@@ -38,7 +38,7 @@ export function ContactPage({ attachment, defaultCategory = 'other', onBack }: P
       contact: contact.trim() || undefined,
       website,
       attachment: attached ? attachment : undefined,
-      meta: { url: location.href, userAgent: navigator.userAgent },
+      meta: { url: location.href, userAgent: navigator.userAgent, version: __APP_VERSION__ },
     };
     try {
       const res = await fetch('/api/contact', {

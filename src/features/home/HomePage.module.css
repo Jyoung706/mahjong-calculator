@@ -56,6 +56,7 @@
 .introTitle { font-size: 13px; font-weight: 700; color: #4a463f; }
 .introBody { font-size: 12px; color: var(--muted); line-height: 1.7; }
 .footer { padding: 0 28px 34px; display: flex; flex-direction: column; gap: 6px; }
+.version { font-size: 10px; color: var(--faint); letter-spacing: 0.04em; }
 .copyright { font-size: 10px; color: var(--faint); }
 
 .badge {

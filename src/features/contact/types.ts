@@ -23,5 +23,5 @@ export interface ContactPayload {
   contact?: string;
   website?: string; // 허니팟 — 항상 비워둠
   attachment?: ContactAttachment;
-  meta: { url: string; userAgent: string };
+  meta: { url: string; userAgent: string; version: string };
 }
