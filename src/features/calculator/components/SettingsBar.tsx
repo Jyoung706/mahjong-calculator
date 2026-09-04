@@ -2,56 +2,107 @@ import type { Wind } from '../../../../engine/types';
 import { Segmented } from '../../../components/Segmented';
 import { TileView } from '../../../components/Tile';
 import { WIND_LABELS } from '../../../lib/tileAssets';
-import type { TileInst, Target } from '../useCalculatorState';
+import { SITUATIONS, isMenzen, type CalcState, type SituationKey, type TileInst, type Target } from '../useCalculatorState';
 import { cx } from '../../../lib/cx';
 import s from './SettingsBar.module.css';
 
 const WINDS = ['1z', '2z', '3z', '4z'] as const;
+const MAX_COUNT = 99;
 
 interface Props {
-  roundWind: Wind;
-  seatWind: Wind;
-  isTsumo: boolean;
-  riichi: boolean;
-  doraInd: TileInst[];
-  uraInd: TileInst[];
-  target: Target;
+  st: CalcState;
   doraHan: string;
-  onPatch: (p: Partial<{ roundWind: Wind; seatWind: Wind; isTsumo: boolean; riichi: boolean }>) => void;
+  onPatch: (p: Partial<{ roundWind: Wind; seatWind: Wind; isTsumo: boolean; riichi: boolean; honba: number; riichiSticks: number }>) => void;
+  onToggleSituation: (key: SituationKey) => void;
   onSetTarget: (t: Target) => void;
   onRemoveIndicator: (which: 'dora' | 'ura', key: number) => void;
 }
 
-export function SettingsBar(p: Props) {
+export function SettingsBar({ st, doraHan, onPatch, onToggleSituation, onSetTarget, onRemoveIndicator }: Props) {
+  const menzen = isMenzen(st);
   return (
     <div className={s.wrap}>
       <Row label="장풍">
-        <Segmented options={WINDS} labels={WIND_LABELS} value={p.roundWind} onChange={(v) => p.onPatch({ roundWind: v })} />
+        <Segmented options={WINDS} labels={WIND_LABELS} value={st.roundWind} onChange={(v) => onPatch({ roundWind: v })} />
       </Row>
       <Row label="내 바람">
-        <Segmented options={WINDS} labels={WIND_LABELS} value={p.seatWind} onChange={(v) => p.onPatch({ seatWind: v })} />
+        <Segmented options={WINDS} labels={WIND_LABELS} value={st.seatWind} onChange={(v) => onPatch({ seatWind: v })} />
       </Row>
       <Row label="화료">
         <Segmented
           options={['ron', 'tsumo'] as const}
           labels={['론', '쯔모']}
-          value={p.isTsumo ? 'tsumo' : 'ron'}
-          onChange={(v) => p.onPatch({ isTsumo: v === 'tsumo' })}
+          value={st.isTsumo ? 'tsumo' : 'ron'}
+          onChange={(v) => onPatch({ isTsumo: v === 'tsumo' })}
         />
-        <button type="button" onClick={() => p.onPatch({ riichi: !p.riichi })} className={cx(s.riichiBtn, p.riichi && s.riichiOn)}>
+        <button
+          type="button"
+          disabled={!menzen}
+          onClick={() => onPatch({ riichi: !st.riichi })}
+          className={cx(s.riichiBtn, st.riichi && s.riichiOn)}
+        >
           리치
         </button>
       </Row>
+      {!menzen && <div className={s.hint}>부로한 손패로는 리치를 걸 수 없습니다</div>}
+
+      <Row label="상황역">
+        <div className={s.chips}>
+          {SITUATIONS.filter((x) => x.show(st)).map((x) => {
+            const blocked = !x.ok(st);
+            return (
+              <button
+                key={x.key}
+                type="button"
+                disabled={blocked}
+                title={x.hint}
+                onClick={() => onToggleSituation(x.key)}
+                className={cx(s.chip, st[x.key] && s.chipOn)}
+              >
+                {x.label}
+                {blocked && x.need && <span className={s.chipNeed}>{x.need(st)}</span>}
+              </button>
+            );
+          })}
+        </div>
+      </Row>
+
+      <Row label="본장">
+        <Stepper value={st.honba} onChange={(v) => onPatch({ honba: v })} />
+        <div className={s.inlineLabel}>남의 리치봉</div>
+        <Stepper value={st.riichiSticks} onChange={(v) => onPatch({ riichiSticks: v })} />
+      </Row>
+      {st.riichi && <div className={s.hint}>본인 리치봉 1개는 자동으로 포함됩니다 — 다른 사람이 낸 것만 세어 주세요</div>}
 
       <div className={s.indicators}>
-        <IndicatorSlots label="도라 표시패" which="dora" tiles={p.doraInd} active={p.target === 'dora'} {...p} />
-        {p.riichi && <IndicatorSlots label="우라도라 표시패" which="ura" tiles={p.uraInd} active={p.target === 'ura'} {...p} />}
-        <div className={`mono ${s.doraHan}`}>{p.doraHan}</div>
+        <IndicatorSlots
+          label="도라 표시패" which="dora" tiles={st.doraInd} active={st.target === 'dora'}
+          onSetTarget={onSetTarget} onRemoveIndicator={onRemoveIndicator}
+        />
+        {st.riichi && (
+          <IndicatorSlots
+            label="우라도라 표시패" which="ura" tiles={st.uraInd} active={st.target === 'ura'}
+            onSetTarget={onSetTarget} onRemoveIndicator={onRemoveIndicator}
+          />
+        )}
+        <div className={`mono ${s.doraHan}`}>{doraHan}</div>
       </div>
 
-      {p.target !== 'hand' && (
-        <div className="notice">{p.target === 'dora' ? '도라' : '우라도라'} 표시패로 지정할 패를 아래 패널에서 탭하세요</div>
+      {st.target !== 'hand' && (
+        <div className="notice">{st.target === 'dora' ? '도라' : '우라도라'} 표시패로 지정할 패를 아래 패널에서 탭하세요</div>
       )}
+    </div>
+  );
+}
+
+/** 본장·리치봉처럼 0부터 세는 값의 증감 입력 */
+function Stepper({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const step = (d: number) => onChange(Math.min(MAX_COUNT, Math.max(0, value + d)));
+  return (
+    <div className={s.stepper}>
+      <button type="button" onClick={() => step(-1)} disabled={value === 0} className={s.stepBtn}>−</button>
+      <div className={cx('mono', s.stepValue, value > 0 && s.stepValueOn)}>{value}</div>
+      <button type="button" onClick={() => step(1)} disabled={value === MAX_COUNT} className={s.stepBtn}>+</button>
     </div>
   );
 }

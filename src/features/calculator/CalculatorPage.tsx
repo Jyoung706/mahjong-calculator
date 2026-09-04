@@ -4,7 +4,7 @@ import { decompose } from '../../../engine/decompose';
 import { ALL_TILES } from '../../../engine/tiles';
 import type { Rules } from '../../../engine/types';
 import type { ContactAttachment } from '../contact/types';
-import { useCalculatorState, toWinInput } from './useCalculatorState';
+import { useCalculatorState, toWinInput, sticksOnTable, isMenzen } from './useCalculatorState';
 import { SettingsBar } from './components/SettingsBar';
 import { MeldSection } from './components/MeldSection';
 import { HandSection } from './components/HandSection';
@@ -43,7 +43,8 @@ export function CalculatorPage({ rules, onBack, onContact }: {
 
   const missing = st.hand.length < c.handNeed ? `손패 ${c.handNeed - st.hand.length}장 더 입력` : '화료패 1장을 지정하세요';
   const isDealer = st.seatWind === '1z';
-  const isMenzen = st.melds.every((m) => m.type === 'ankan');
+  const menzen = isMenzen(st);
+  const sticks = sticksOnTable(st); // 표시용 — 본인 리치봉까지 합친 실제 회수 개수
   const doraHan = result?.valid
     ? result.yaku.filter((y) => ['도라', '우라도라', '적도라'].includes(y.name)).map((y) => `${y.name} ${y.han}`).join(' · ') || '도라 없음'
     : '';
@@ -59,24 +60,23 @@ export function CalculatorPage({ rules, onBack, onContact }: {
       </header>
 
       <SettingsBar
-        roundWind={st.roundWind} seatWind={st.seatWind} isTsumo={st.isTsumo} riichi={st.riichi}
-        doraInd={st.doraInd} uraInd={st.uraInd} target={st.target} doraHan={doraHan}
-        onPatch={c.patch} onSetTarget={c.setTarget} onRemoveIndicator={c.removeIndicator}
+        st={st} doraHan={doraHan}
+        onPatch={c.patch} onToggleSituation={c.toggleSituation}
+        onSetTarget={c.setTarget} onRemoveIndicator={c.removeIndicator}
       />
 
       <main className={s.main}>
         <MeldSection melds={st.melds} pending={st.pending} onTogglePending={c.togglePending} onBreakMeld={c.breakMeld} />
         <HandSection
-          hand={st.hand} need={c.handNeed} selected={st.selected}
-          onToggleSelect={c.toggleSelect} onDeleteSelected={c.deleteSelected} onClearAll={c.clearAll}
+          hand={st.hand} need={c.handNeed} onRemove={c.removeHandTile} onClearAll={c.clearAll}
         />
         <WinTileSection winTile={st.winTile} isTsumo={st.isTsumo} awaiting={awaiting} waits={waits} onClear={c.clearWin} onPick={(id) => c.tapPanel(id, false)} />
       </main>
 
-      <ScoreBar result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} isMenzen={isMenzen} onOpenSheet={() => setSheet(true)} />
+      <ScoreBar result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} isMenzen={menzen} honba={st.honba} riichiSticks={sticks} onOpenSheet={() => setSheet(true)} />
       <TilePanel countOf={c.countOf} redUsed={c.redUsed} onTap={c.tapPanel} />
 
-      <DetailSheet open={sheet} result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} roundWind={st.roundWind} seatWind={st.seatWind} onClose={() => setSheet(false)} onContact={() => onContact(buildAttachment())} />
+      <DetailSheet open={sheet} result={result} missing={missing} isDealer={isDealer} isTsumo={st.isTsumo} roundWind={st.roundWind} seatWind={st.seatWind} honba={st.honba} riichiSticks={sticks} onClose={() => setSheet(false)} onContact={() => onContact(buildAttachment())} />
     </div>
   );
 }

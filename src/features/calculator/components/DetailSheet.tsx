@@ -12,12 +12,18 @@ interface Props {
   isTsumo: boolean;
   roundWind: Wind;
   seatWind: Wind;
+  honba: number;
+  riichiSticks: number;
   onClose: () => void;
   onContact: () => void;
 }
 
-export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWind, seatWind, onClose, onContact }: Props) {
+export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWind, seatWind, honba, riichiSticks, onClose, onContact }: Props) {
   const ok = result?.valid === true;
+  // 본장은 총액으로 항상 300점(론 300 / 쯔모 각 100 × 3), 리치봉은 1개당 1000점
+  const honbaBonus = honba * 300;
+  const stickBonus = riichiSticks * 1000;
+  const settled = ok && (honbaBonus > 0 || stickBonus > 0);
   return (
     <>
       <div onClick={onClose} className={cx(s.backdrop, open && s.backdropOpen)} />
@@ -61,8 +67,20 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
                   <div className={s.blockRight}>{result.limitName ? '판수가 높아 고정 점수' : `현재: ${result.han}판 ${result.fu}부`}</div>
                 </div>
                 <ScoreGrid han={result.han} fu={result.fu} isDealer={isDealer} isTsumo={isTsumo} limited={!!result.limitName} />
+                {settled && <div className={s.gridNote}>표의 값은 본장·리치봉을 뺀 기본 점수입니다</div>}
               </div>
             </>
+          )}
+
+          {settled && (
+            <Block title="정산" right={`${result.payment.total.toLocaleString()}점`}>
+              <Line name="기본 점수" val={(result.payment.total - honbaBonus - stickBonus).toLocaleString()} />
+              {honbaBonus > 0 && (
+                <Line name={`${honba}본장 (${isTsumo ? '각 100' : '300'}점)`} val={`+${honbaBonus.toLocaleString()}`} />
+              )}
+              {stickBonus > 0 && <Line name={`리치봉 ${riichiSticks}개 회수`} val={`+${stickBonus.toLocaleString()}`} />}
+              <Line name="받는 점수" val={result.payment.total.toLocaleString()} bold />
+            </Block>
           )}
 
           <div onClick={onClose} className={s.returnBtn}>패 수정으로 돌아가기</div>

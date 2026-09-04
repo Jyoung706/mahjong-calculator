@@ -8,10 +8,12 @@ interface Props {
   isDealer: boolean;
   isTsumo: boolean;
   isMenzen: boolean;
+  honba: number;
+  riichiSticks: number;
   onOpenSheet: () => void;
 }
 
-export function ScoreBar({ result, missing, isDealer, isTsumo, isMenzen, onOpenSheet }: Props) {
+export function ScoreBar({ result, missing, isDealer, isTsumo, isMenzen, honba, riichiSticks, onOpenSheet }: Props) {
   const ok = result?.valid === true;
   const headline = ok ? result.payment.total.toLocaleString() : result ? '화료 불가' : '––––';
   const sub = ok
@@ -24,6 +26,8 @@ export function ScoreBar({ result, missing, isDealer, isTsumo, isMenzen, onOpenS
         <div className={`mono ${s.sub}`}>{sub}</div>
         <div className={`mono ${s.sub}`}>
           {isDealer ? '친' : '자'} · {isTsumo ? '쯔모' : '론'} · {isMenzen ? '멘젠' : '부로'}
+          {honba > 0 && ` · ${honba}본장`}
+          {riichiSticks > 0 && ` · 리치봉 ${riichiSticks}`}
         </div>
         <div className={cx(s.cta, !ok && s.ctaDim)}>상세보기 ↑</div>
       </div>

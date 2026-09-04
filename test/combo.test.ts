@@ -112,6 +112,17 @@ test('본장·리치봉 가산', () => {
   expect(r.payment.total).toBe(2600); // + 리치봉 1000
 });
 
+// 상세보기의 정산 표시가 "본장은 총액 300점"이라는 산술에 기대고 있다
+test('쯔모 본장·리치봉 — 본장은 각 100점이지만 총액은 론과 같은 300점', () => {
+  const pay = (honba: number, riichiSticks: number) =>
+    calcPayment({ han: 3, fu: 30, yakumanMultiplier: 0, isDealer: false, isTsumo: true, honba, riichiSticks, kazoeYakuman: true }).payment;
+  const plain = pay(0, 0);
+  const bonus = pay(2, 1);
+  expect(bonus.tsumoFromNonDealer).toBe(plain.tsumoFromNonDealer! + 200);
+  expect(bonus.tsumoFromDealer).toBe(plain.tsumoFromDealer! + 200);
+  expect(bonus.total - plain.total).toBe(2 * 300 + 1000);
+});
+
 test('카조에 역만 룰 옵션', () => {
   const pay = (kazoe: boolean) =>
     calcPayment({ han: 13, fu: 30, yakumanMultiplier: 0, isDealer: false, isTsumo: false, honba: 0, riichiSticks: 0, kazoeYakuman: kazoe });

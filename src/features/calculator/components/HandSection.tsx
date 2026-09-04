@@ -6,13 +6,11 @@ import s from './HandSection.module.css';
 interface Props {
   hand: TileInst[];
   need: number;
-  selected: number[];
-  onToggleSelect: (key: number) => void;
-  onDeleteSelected: () => void;
+  onRemove: (key: number) => void;
   onClearAll: () => void;
 }
 
-export function HandSection({ hand, need, selected, onToggleSelect, onDeleteSelected, onClearAll }: Props) {
+export function HandSection({ hand, need, onRemove, onClearAll }: Props) {
   return (
     <div className={s.wrap}>
       <div className={s.head}>
@@ -25,14 +23,12 @@ export function HandSection({ hand, need, selected, onToggleSelect, onDeleteSele
 
       <div className={s.tray}>
         {hand.map((t) => (
-          <TileView key={t.key} id={t.id} red={t.red} selected={selected.includes(t.key)} onClick={() => onToggleSelect(t.key)} />
+          <TileView key={t.key} id={t.id} red={t.red} onClick={() => onRemove(t.key)} />
         ))}
         {Array.from({ length: Math.max(0, need - hand.length) }, (_, i) => <div key={i} className={s.empty} />)}
       </div>
 
-      {selected.length > 0 && (
-        <button type="button" onClick={onDeleteSelected} className={s.deleteBtn}>{selected.length}장 삭제</button>
-      )}
+      {hand.length > 0 && <div className={s.tip}>패를 탭하면 손패에서 빠집니다</div>}
     </div>
   );
 }

@@ -42,6 +42,7 @@
 .gSoft { background: var(--soft); }
 .gHit { background: var(--accent); color: var(--surface); }
 .gLimit { color: var(--muted); }
+.gridNote { font-size: 11px; color: var(--faint); padding: 6px 2px 0; }
 .returnBtn {
   height: 46px; border-radius: 10px; background: var(--ink); color: #f7f6f3;
   display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; cursor: pointer;

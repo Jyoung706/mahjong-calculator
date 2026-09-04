@@ -9,7 +9,4 @@
   padding: 9px; display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start;
 }
 .empty { width: 34px; height: 46px; border-radius: 5px; border: 1.5px dashed var(--line-soft); }
-.deleteBtn {
-  padding: 9px 0; text-align: center; border-radius: 8px; border: 1px solid var(--line);
-  background: var(--surface); font-size: 13px; color: var(--accent); cursor: pointer;
-}
+.tip { font-size: 11px; color: var(--faint); }
