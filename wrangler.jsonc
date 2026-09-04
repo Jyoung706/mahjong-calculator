@@ -4,10 +4,16 @@
   "main": "worker/index.ts",
   "compatibility_date": "2026-09-01",
 
-  // 커스텀 도메인을 붙이기 전까지 <name>.<subdomain>.workers.dev 로 접속
-  "workers_dev": true,
-  // 버전별 공개 미리보기 URL은 사용하지 않음 (검색엔진 중복 색인 방지)
+  // 정식 주소는 커스텀 도메인 하나로 통일한다.
+  // workers.dev 주소를 열어두면 같은 사이트가 두 URL로 색인되므로 비활성.
+  "workers_dev": false,
   "preview_urls": false,
+
+  // 대시보드에서 연결한 커스텀 도메인. 여기 적어두지 않으면 배포 때마다 원격 설정을 덮어써
+  // 도메인 연결이 끊길 수 있다. (www 는 DNS 레코드 + Redirect Rule 로 처리)
+  "routes": [
+    { "pattern": "panbu.cloud", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
