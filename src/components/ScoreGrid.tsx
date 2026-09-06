@@ -18,7 +18,7 @@ interface Props {
 export function ScoreGrid({ han, fu, isDealer, isTsumo, limited, mine }: Props) {
   const cell = (f: number, h: number) => {
     const r = calcPayment({ han: h, fu: f, yakumanMultiplier: 0, isDealer, isTsumo, honba: 0, riichiSticks: 0, kazoeYakuman: true });
-    if (r.limitName) return '만관';
+    if (r.limit) return '만관';
     return isTsumo
       ? (isDealer ? `${r.payment.tsumoFromNonDealer}올` : `${r.payment.tsumoFromNonDealer}/${r.payment.tsumoFromDealer}`)
       : String(r.payment.ron);

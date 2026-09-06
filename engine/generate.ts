@@ -29,7 +29,7 @@ export function generateProblem(difficulty: Difficulty, rules: Rules): QuizProbl
     const p = tryGenerate(difficulty, rules);
     if (p) return p;
   }
-  throw new Error('조건에 맞는 문제를 생성하지 못했습니다');
+  throw new Error('quiz: no problem matched the requested difficulty');
 }
 
 function tryGenerate(difficulty: Difficulty, rules: Rules): QuizProblem | null {
@@ -149,9 +149,9 @@ function tryGenerate(difficulty: Difficulty, rules: Rules): QuizProblem | null {
 
   // 난이도 필터 (디자인 11의 정의)
   if (difficulty === 'beginner') {
-    if (result.yakuman.length > 0 || result.limitName || result.han > 4 || result.fu < 20 || result.fu > 40) return null;
+    if (result.yakuman.length > 0 || result.limit || result.han > 4 || result.fu < 20 || result.fu > 40) return null;
   } else if (difficulty === 'normal') {
-    if (result.yakuman.length > 0 || result.limitName) return null;
+    if (result.yakuman.length > 0 || result.limit) return null;
   }
 
   return { input, result, handDisplay, winDisplay, meldsDisplay };

@@ -1,4 +1,4 @@
-import type { Tile, WinInput } from './types';
+import type { ScoreError, Tile, WinInput } from './types';
 
 // 패 표기: 1m~9m, 1p~9p, 1s~9s, 1z~7z (東南西北白發中)
 export const SUITS = ['m', 'p', 's'] as const;
@@ -26,31 +26,31 @@ export function countTiles(tiles: Tile[]): Partial<Record<Tile, number>> {
 }
 
 /** 입력 검증. 문제 있으면 에러 메시지, 없으면 null */
-export function validate(input: WinInput): string | null {
+export function validate(input: WinInput): ScoreError | null {
   const { concealed, melds, winningTile } = input;
 
   for (const m of melds) {
     const expected = m.type === 'chi' || m.type === 'pon' ? 3 : 4;
-    if (m.tiles.length !== expected) return `부로 매수 오류: ${m.type}은 ${expected}장`;
+    if (m.tiles.length !== expected) return { id: 'meldSize', meld: m.type, expected };
     if (m.type === 'chi') {
       const [a, b, c] = [...m.tiles].sort();
       if (isHonor(a) || suit(a) !== suit(b) || suit(b) !== suit(c) || num(b) !== num(a) + 1 || num(c) !== num(a) + 2)
-        return `부로 구성 오류: 치는 연속 수패 (${m.tiles.join(',')})`;
+        return { id: 'meldShape', meld: m.type, tiles: m.tiles };
     } else if (m.tiles.some((t) => t !== m.tiles[0])) {
-      return `부로 구성 오류: ${m.type}은 같은 패 (${m.tiles.join(',')})`;
+      return { id: 'meldShape', meld: m.type, tiles: m.tiles };
     }
   }
 
   // 깡은 4장이지만 면자 1개(3장)로 계산 → 손패는 13 - 부로수×3 장이어야 함
   if (concealed.length + 1 + melds.length * 3 !== 14)
-    return `패 매수 오류: 손패 ${concealed.length}장 (부로 ${melds.length}개면 ${13 - melds.length * 3}장이어야 함)`;
+    return { id: 'handSize', count: concealed.length, expected: 13 - melds.length * 3 };
 
   // 도라·우라도라 표시패도 산에서 나온 실제 패다
   const counts = countTiles(
     [concealed, [winningTile], ...melds.map((m) => m.tiles), input.doraIndicators, input.uraDoraIndicators].flat(),
   );
   for (const [t, n] of Object.entries(counts)) {
-    if (n > 4) return `같은 패 5장 이상: ${t} ${n}장`;
+    if (n > 4) return { id: 'tileOverflow', tile: t as Tile, count: n };
   }
 
   return null;

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import type { QuizProblem } from '../../../engine/generate';
 import { TileView } from '../../components/Tile';
 import { ScoreGrid } from '../../components/ScoreGrid';
-import { WIND_LABELS, formatTileText } from '../../lib/tileAssets';
+import { WIND_LABELS } from '../../lib/tileAssets';
+import { fuLabel, LIMIT_LABEL, YAKU_LABEL, YAKUMAN_LABEL } from '../../lib/scoreLabels';
 import { MELD_LABELS } from '../calculator/useCalculatorState';
 import { cx } from '../../lib/cx';
 import { HAN_CHIPS, FU_CHIPS, hanBracket, type QuizMode, type QuizRecord } from './types';
@@ -29,7 +30,8 @@ export function PlayView({ problem, mode, unlimited, answeredCount, onNext, onEn
 
   const { input, result } = problem;
   const isDealer = input.seatWind === '1z';
-  const limited = !!result.limitName || result.yakuman.length > 0;
+  const limit = result.limit ? LIMIT_LABEL[result.limit] : null;
+  const limited = !!limit || result.yakuman.length > 0;
 
   // 채점 대상: 모드 + 만관 이상이면 부수 제외 (명세 §17.2)
   const askHan = mode === 'full';
@@ -190,13 +192,13 @@ export function PlayView({ problem, mode, unlimited, answeredCount, onNext, onEn
           <>
             <div className={cx(s.verdict, record.allOk ? s.verdictOk : s.verdictNo)}>
               {record.allOk
-                ? `정답 — ${result.han}판 ${limited ? result.limitName : `${result.fu}부`} ${result.payment.total.toLocaleString()}`
-                : `정답은 ${result.han}판 ${limited ? result.limitName : `${result.fu}부`} · ${result.payment.total.toLocaleString()}점`}
+                ? `정답 — ${result.han}판 ${limited ? limit : `${result.fu}부`} ${result.payment.total.toLocaleString()}`
+                : `정답은 ${result.han}판 ${limited ? limit : `${result.fu}부`} · ${result.payment.total.toLocaleString()}점`}
             </div>
 
             <div className={`card ${s.answerCard}`}>
               <div className={`mono ${s.answerSub}`}>
-                {result.han}판 {limited ? result.limitName : `${result.fu}부`} · {isDealer ? '친' : '자'} · {input.isTsumo ? '쯔모' : '론'}
+                {result.han}판 {limited ? limit : `${result.fu}부`} · {isDealer ? '친' : '자'} · {input.isTsumo ? '쯔모' : '론'}
               </div>
               <div className={s.answerScoreRow}>
                 <div className={`mono ${s.answerScore}`}>{result.payment.total.toLocaleString()}</div>
@@ -215,12 +217,12 @@ export function PlayView({ problem, mode, unlimited, answeredCount, onNext, onEn
 
             <div className={s.blockHead}>
               <div className={s.sectionTitle} style={{ marginBottom: 0 }}>성립한 역</div>
-              <div className={`mono ${s.blockRight}`}>{result.yakuman.length > 0 ? result.limitName : `합 ${result.han}판`}</div>
+              <div className={`mono ${s.blockRight}`}>{result.yakuman.length > 0 ? limit : `합 ${result.han}판`}</div>
             </div>
             <div className={`card ${s.listCard}`}>
               {result.yakuman.length > 0
-                ? result.yakuman.map((y) => <Line key={y.name} name={y.name} val={y.multiplier > 1 ? '더블' : '역만'} />)
-                : result.yaku.map((y) => <Line key={y.name} name={y.name} val={`${y.han}판`} />)}
+                ? result.yakuman.map((y) => <Line key={y.id} name={YAKUMAN_LABEL[y.id]} val={y.multiplier > 1 ? '더블' : '역만'} />)
+                : result.yaku.map((y) => <Line key={y.id} name={YAKU_LABEL[y.id]} val={`${y.han}판`} />)}
             </div>
 
             {result.yakuman.length === 0 && (
@@ -231,7 +233,7 @@ export function PlayView({ problem, mode, unlimited, answeredCount, onNext, onEn
                 </div>
                 <div className={`card ${s.listCard}`}>
                   {result.fuBreakdown.map((f, i) => (
-                    <Line key={i} name={formatTileText(f.label, input.roundWind, input.seatWind)} val={`${f.fu}부`} />
+                    <Line key={i} name={fuLabel(f, input.roundWind, input.seatWind)} val={`${f.fu}부`} />
                   ))}
                 </div>
 

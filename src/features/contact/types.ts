@@ -14,7 +14,7 @@ export interface ContactAttachment {
   kind: 'calculation' | 'rules';
   rules: Rules;
   input?: WinInput;
-  result?: Pick<ScoreResult, 'valid' | 'error' | 'han' | 'fu' | 'limitName' | 'payment' | 'yaku' | 'yakuman'>;
+  result?: Pick<ScoreResult, 'valid' | 'error' | 'han' | 'fu' | 'limit' | 'payment' | 'yaku' | 'yakuman'>;
 }
 
 export interface ContactPayload {

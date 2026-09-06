@@ -33,7 +33,7 @@ test('하저로어·창깡 — 론 상황역', () => {
 
 test('더블리치는 리치와 중복 계상되지 않는다', () => {
   const r = calculateScore(win(PINFU, '5p', { riichi: true, doubleRiichi: true }), DEFAULT_RULES);
-  expect(r.yaku.map((y) => y.name)).not.toContain('리치');
+  expect(r.yaku.map((y) => y.id)).not.toContain('riichi');
   expect(r.han).toBe(4); // 더블리치2 + 탄야오1 + 핑후1
 });
 
@@ -47,7 +47,7 @@ test('영상개화 — 안깡 60부, 멘젠쯔모와 함께 성립', () => {
 
 test('천화·지화는 자리에 맞을 때만 붙는다', () => {
   const dealer = calculateScore(win(PINFU, '5p', { isTsumo: true, tenhou: true, seatWind: '1z' }), DEFAULT_RULES);
-  expect(dealer.yakuman).toEqual([{ name: '천화', multiplier: 1 }]);
+  expect(dealer.yakuman).toEqual([{ id: 'tenhou', multiplier: 1 }]);
   expect(dealer.payment.total).toBe(48000);
 
   const wrongSeat = calculateScore(win(PINFU, '5p', { isTsumo: true, tenhou: true }), DEFAULT_RULES);
@@ -61,7 +61,7 @@ test('본장·리치봉 — 친 쯔모 만관에 3본장과 리치봉 2개', () 
   const r = calculateScore(win(PINFU, '5p', {
     isTsumo: true, seatWind: '1z', riichi: true, ippatsu: true, honba: 3, riichiSticks: 2,
   }), DEFAULT_RULES);
-  expect(r.limitName).toBe('만관');
+  expect(r.limit).toBe('mangan');
   expect(r.payment.tsumoFromNonDealer).toBe(4300); // 4000 + 3본장×100
   expect(r.payment.total).toBe(4300 * 3 + 2000);
 });
@@ -78,7 +78,7 @@ test('도라 표시패까지 합쳐 같은 패가 5장이면 무효', () => {
   const hand = ['5m','6m','7m','2p','3p','4p','6p','7p','5s','5s'];
   const kan = { melds: [{ type: 'ankan' as const, tiles: ['2m','2m','2m','2m'] as Tile[] }] };
   expect(calculateScore(win(hand, '5p', { ...kan, doraIndicators: ['2m'] }), DEFAULT_RULES)).toMatchObject({
-    valid: false, error: '같은 패 5장 이상: 2m 5장',
+    valid: false, error: { id: 'tileOverflow', tile: '2m', count: 5 },
   });
   expect(calculateScore(win(hand, '5p', { ...kan, doraIndicators: ['9p'] }), DEFAULT_RULES).valid).toBe(true);
 });

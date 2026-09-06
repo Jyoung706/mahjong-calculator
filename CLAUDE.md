@@ -18,6 +18,9 @@ npm run typecheck        # 앱 + worker
   계산기·퀴즈·점수표·문의 첨부가 전부 이 엔진 하나를 재사용한다.
 - **점수 값을 하드코딩하지 않는다.** 표·퀴즈 정답 모두 `calcPayment`/`calculateScore`로 생성한다.
 - **UI↔엔진 접점은 `toWinInput()` 하나다** (`src/features/calculator/useCalculatorState.ts`).
+- **엔진은 표시 문자열을 만들지 않는다.** 역·역만·한계·부수·에러는 전부 `engine/ids.ts`의
+  ID로 반환하고, 사람이 읽는 이름은 `src/lib/scoreLabels.ts`가 붙인다. 역을 추가하면
+  ID → 라벨 매핑이 빠졌을 때 타입 검사가 잡아준다.
 - **스타일은 CSS Modules.** 인라인 스타일은 동적 값(이미지 URL·크기)에만.
   인라인이 미디어쿼리를 덮어써 반응형이 깨진 전례가 있다.
 - **Cloudflare 설정은 `wrangler.jsonc`에 쓴다.** 대시보드에서만 바꾸면 다음 배포가 덮어쓴다.

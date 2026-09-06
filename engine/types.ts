@@ -1,3 +1,6 @@
+import type { FuLine, LimitId, ScoreError, YakuId, YakumanId } from './ids';
+export type { FuLine, FuReason, LimitId, ScoreError, YakuId, YakumanId } from './ids';
+
 // 명세 §3 입력, §10 출력 모델
 type Digit = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type SuitTile = `${Digit}${'m' | 'p' | 's'}`; // 수패
@@ -35,13 +38,13 @@ export interface WinInput {
 
 export interface ScoreResult {
   valid: boolean;
-  error?: string;
-  yaku: { name: string; han: number }[];
-  yakuman: { name: string; multiplier: number }[];
+  error?: ScoreError;
+  yaku: { id: YakuId; han: number }[];
+  yakuman: { id: YakumanId; multiplier: number }[];
   han: number;
   fu: number;
-  fuBreakdown: { label: string; fu: number }[];
-  limitName?: '만관' | '하네만' | '배만' | '삼배만' | '역만' | '더블역만';
+  fuBreakdown: FuLine[];
+  limit?: LimitId;
   basePoints: number;
   payment: {
     total: number;

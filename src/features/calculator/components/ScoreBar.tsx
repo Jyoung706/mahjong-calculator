@@ -1,4 +1,5 @@
 import type { ScoreResult } from '../../../../engine/types';
+import { errorLabel, LIMIT_LABEL } from '../../../lib/scoreLabels';
 import { cx } from '../../../lib/cx';
 import s from './ScoreBar.module.css';
 
@@ -16,9 +17,10 @@ interface Props {
 export function ScoreBar({ result, missing, isDealer, isTsumo, isMenzen, honba, riichiSticks, onOpenSheet }: Props) {
   const ok = result?.valid === true;
   const headline = ok ? result.payment.total.toLocaleString() : result ? '화료 불가' : '––––';
+  const limit = ok && result.limit ? LIMIT_LABEL[result.limit] : null;
   const sub = ok
-    ? `${result.yakuman.length > 0 ? result.limitName : `${result.han}판 ${result.fu}부`}${result.limitName && result.yakuman.length === 0 ? ` · ${result.limitName}` : ''}`
-    : result ? result.error : '0판';
+    ? `${result.yakuman.length > 0 ? limit : `${result.han}판 ${result.fu}부`}${limit && result.yakuman.length === 0 ? ` · ${limit}` : ''}`
+    : result?.error ? errorLabel(result.error) : '0판';
 
   return (
     <div onClick={onOpenSheet} className={s.bar}>

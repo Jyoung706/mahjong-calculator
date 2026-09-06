@@ -18,7 +18,7 @@ function impossible(fu: number, han: number, isTsumo: boolean): boolean {
 function cellText(fu: number, han: number, isDealer: boolean, isTsumo: boolean): string {
   if (impossible(fu, han, isTsumo)) return '–';
   const r = calcPayment({ han, fu, yakumanMultiplier: 0, isDealer, isTsumo, honba: 0, riichiSticks: 0, kazoeYakuman: true });
-  if (r.limitName) return '만관';
+  if (r.limit) return '만관';
   if (!isTsumo) return String(r.payment.ron);
   return isDealer ? `${r.payment.tsumoFromNonDealer}올` : `${r.payment.tsumoFromNonDealer}/${r.payment.tsumoFromDealer}`;
 }

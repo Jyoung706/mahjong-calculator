@@ -28,20 +28,3 @@ export const PANELS: { key: string; label: string; tiles: Tile[] }[] = [
 ];
 
 export const WIND_LABELS = ['동', '남', '서', '북'];
-
-const HONOR_HANJA = ['東', '南', '西', '北', '白', '發', '中'];
-
-/**
- * 부수 내역 등 엔진이 주는 문자열 속 패 코드를 일반 사용자용 표기로 변환.
- * 수패: 1m → 1만 · 자패: 한자 + (장풍/자풍/삼원패) 주석
- */
-export function formatTileText(text: string, roundWind: Tile, seatWind: Tile): string {
-  return text.replace(/[1-9][mps]|[1-7]z/g, (code) => {
-    const n = Number(code[0]);
-    if (code[1] !== 'z') return `${n}${SUIT_LABEL[code[1] as 'm' | 'p' | 's']}`;
-    const hanja = HONOR_HANJA[n - 1];
-    if (n >= 5) return `${hanja}(삼원패)`;
-    const roles = [code === roundWind && '장풍', code === seatWind && '자풍'].filter(Boolean);
-    return roles.length > 0 ? `${hanja}(${roles.join('·')})` : hanja;
-  });
-}
