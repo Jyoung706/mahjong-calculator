@@ -39,8 +39,10 @@ export function ScoreBar({ result, missing, isDealer, isTsumo, isMenzen, honba, 
   );
 }
 
+/** 총점만으로는 몇 점씩 받는지 알 수 없다. 쯔모는 지불 단위가 사람마다 다르다 */
 function paymentNote(r: ScoreResult, isDealer: boolean, isTsumo: boolean): string {
-  if (!isTsumo) return '방총자에게서 수취';
-  if (isDealer) return `전원에게서 각 ${r.payment.tsumoFromNonDealer?.toLocaleString()}`;
-  return `자 ${r.payment.tsumoFromNonDealer?.toLocaleString()} · 친 ${r.payment.tsumoFromDealer?.toLocaleString()}`;
+  const n = (v?: number) => v?.toLocaleString() ?? '-';
+  if (!isTsumo) return `방총자에게서 ${n(r.payment.ron)}`;
+  if (isDealer) return `자 3명에게서 각 ${n(r.payment.tsumoFromNonDealer)}`;
+  return `자 각 ${n(r.payment.tsumoFromNonDealer)} · 친 ${n(r.payment.tsumoFromDealer)}`;
 }

@@ -24,6 +24,7 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
   const honbaBonus = honba * 300;
   const stickBonus = riichiSticks * 1000;
   const settled = ok && (honbaBonus > 0 || stickBonus > 0);
+  const num = (v?: number) => v?.toLocaleString() ?? '-';
   return (
     <>
       <div onClick={onClose} className={cx(s.backdrop, open && s.backdropOpen)} />
@@ -72,14 +73,23 @@ export function DetailSheet({ open, result, missing, isDealer, isTsumo, roundWin
             </>
           )}
 
-          {settled && (
-            <Block title="정산" right={`${result.payment.total.toLocaleString()}점`}>
-              <Line name="기본 점수" val={(result.payment.total - honbaBonus - stickBonus).toLocaleString()} />
-              {honbaBonus > 0 && (
-                <Line name={`${honba}본장 (${isTsumo ? '각 100' : '300'}점)`} val={`+${honbaBonus.toLocaleString()}`} />
+          {ok && (
+            <Block title="지불 내역" right={isTsumo ? '쯔모' : '론'}>
+              {!isTsumo && <Line name="방총자에게서" val={num(result.payment.ron)} />}
+              {isTsumo && isDealer && <Line name="자 3명에게서 각" val={num(result.payment.tsumoFromNonDealer)} />}
+              {isTsumo && !isDealer && (
+                <>
+                  <Line name="친에게서" val={num(result.payment.tsumoFromDealer)} />
+                  <Line name="자 2명에게서 각" val={num(result.payment.tsumoFromNonDealer)} />
+                </>
               )}
               {stickBonus > 0 && <Line name={`리치봉 ${riichiSticks}개 회수`} val={`+${stickBonus.toLocaleString()}`} />}
-              <Line name="받는 점수" val={result.payment.total.toLocaleString()} bold />
+              <Line name="받는 점수" val={num(result.payment.total)} bold />
+              {honbaBonus > 0 && (
+                <div className={s.blockNote}>
+                  위 금액에는 {honba}본장({isTsumo ? '각 100' : '300'}점)이 포함되어 있습니다
+                </div>
+              )}
             </Block>
           )}
 

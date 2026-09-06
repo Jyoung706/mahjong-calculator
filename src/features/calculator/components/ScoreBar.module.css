@@ -6,4 +6,4 @@
 .right { flex: 1; text-align: right; display: flex; flex-direction: column; gap: 2px; }
 .headline { font-size: 28px; font-weight: 500; line-height: 1; color: #f7f6f3; }
 .headlineDim { color: #c4bfb5; }
-.note { font-size: 10px; opacity: 0.55; }
+.note { font-size: 11px; opacity: 0.85; line-height: 1.4; }
