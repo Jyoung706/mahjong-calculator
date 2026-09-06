@@ -1,4 +1,28 @@
-.wrap { padding: 12px 18px; background: var(--surface); border-bottom: 1px solid var(--line-soft); display: flex; flex-direction: column; gap: 10px; }
+.shell { background: var(--surface); border-bottom: 1px solid var(--line-soft); }
+
+/* 접힌 요약 줄 — 이 화면에서 가장 자주 보게 되는 상태 */
+.summary {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 10px 18px; border: none; background: transparent; cursor: pointer;
+  font: inherit; text-align: left;
+}
+.summaryOpen { border-bottom: 1px solid var(--hairline); }
+.summaryText {
+  flex: 1; min-width: 0; font-size: 11px; color: var(--muted); line-height: 1.5;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.summaryCta { flex-shrink: 0; font-size: 11px; color: var(--accent); font-weight: 600; }
+
+/* 펼침 — max-height로만 여닫아 레이아웃 계산을 피한다 */
+.panel { max-height: 0; overflow: hidden; transition: max-height 0.24s ease; }
+.panelOpen { max-height: 560px; }
+
+.handle { padding: 10px 0 2px; display: flex; justify-content: center; cursor: pointer; }
+.handleBar { width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
+
+.pickNotice { margin: 0 18px 10px; }
+
+.wrap { padding: 12px 18px 6px; display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; align-items: center; gap: 8px; }
 .rowLabel { font-size: 11px; color: var(--muted); width: 44px; flex-shrink: 0; }
 .stepper { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; height: 32px; }
