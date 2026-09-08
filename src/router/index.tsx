@@ -16,6 +16,8 @@ import { InfoPage } from '../features/info/InfoPage';
 import { PrivacyPage, PRIVACY_ENABLED } from '../features/info/PrivacyPage';
 import type { ContactAttachment, ContactCategory } from '../features/contact/types';
 import { useRules } from '../features/rules/useRules';
+import { useEffect } from 'react';
+import { applyRouteMeta } from './routeMeta';
 
 declare module '@tanstack/react-router' {
   interface HistoryState {
@@ -24,7 +26,13 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const rootRoute = createRootRoute({ component: Outlet });
+const rootRoute = createRootRoute({
+  component: function Root() {
+    const { pathname } = useLocation();
+    useEffect(() => applyRouteMeta(pathname), [pathname]);
+    return <Outlet />;
+  },
+});
 
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
